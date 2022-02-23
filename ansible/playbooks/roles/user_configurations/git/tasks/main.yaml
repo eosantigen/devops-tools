@@ -1,0 +1,46 @@
+---
+- include_vars: variables.yaml
+
+- name: Install git
+  apt:
+    state: present
+    name: git
+  when: ansible_os_family == "Debian"
+  become: yes
+  become_method: sudo
+
+- name: Git name
+  git_config:
+    name: user.name
+    value: "{{git_username}}"
+    scope: global
+  become: true
+  become_user: "{{localhost_username}}"
+  become_method: su
+
+- name: Git email
+  git_config:
+    name: user.email
+    value: "{{git_email}}"
+    scope: global
+  become: true
+  become_user: "{{localhost_username}}"
+  become_method: su
+
+- name: Git editor
+  git_config:
+    name: core.editor
+    value: vim
+    scope: global
+  become: true
+  become_user: "{{localhost_username}}"
+  become_method: su
+
+- name: Git color
+  git_config:
+    name: color.ui
+    value: auto
+    scope: global
+  become: true
+  become_user: "{{localhost_username}}"
+  become_method: su

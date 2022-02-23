@@ -1,0 +1,7 @@
+*.retry
+.vscode/
+
+# Local .terraform
+**/.terraform/*
+**/.terraform.lock.hcl
+**/terraform.tfstate.d/*

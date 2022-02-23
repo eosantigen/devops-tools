@@ -1,0 +1,4 @@
+autocmd BufWritePre * %s/\s\+$//e
+set ff=unix
+set number
+syntax on

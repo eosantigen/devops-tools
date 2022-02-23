@@ -1,0 +1,6 @@
+---
+- hosts:
+  - localhost
+
+  roles:
+  - k8s_pod_events

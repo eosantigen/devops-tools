@@ -1,0 +1,14 @@
+---
+
+- hosts: "{{host}}"
+
+  roles:
+    - "{{role}}" # how to add multiple roles in a prompt?
+
+  vars_prompt:
+    - name: host
+      prompt: host || host-group
+      private: no
+
+  vars_files:
+    - param/variables.yaml

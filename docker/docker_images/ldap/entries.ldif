@@ -1,0 +1,12 @@
+#dn: dc=metis,dc=tech
+#objectclass: dcObject
+#objectclass: organization
+#o: METIS CYBERTECHNOLOGY
+#dc: metis.tech
+
+dn: cn=elena.ntavli,dc=metis,dc=tech
+objectclass: inetOrgPerson
+cn: elena.ntavli
+sn: Ntavli
+givenName: Elena
+displayName: Elena Ntavli

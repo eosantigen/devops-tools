@@ -1,0 +1,40 @@
+- name: Create .ssh folder if not exists...
+  file:
+    state: directory
+    path: /home/{{localhost_username}}/.ssh
+
+- name: Add authorised key (for remote connection)
+  authorized_key:
+    state: present
+    user: "{{localhost_username}}"
+    key: "{{ lookup('file', 'eos_id_rsa.pub') }}"
+
+- name: Add public SSH key in ~/.ssh
+  copy:
+    src: eos_id_rsa.pub
+    dest: /home/{{localhost_username}}/.ssh
+    owner: "{{localhost_username}}"
+    group: "{{localhost_username}}"
+
+- name: Add private SSH key in ~/.ssh
+  copy:
+    src: eos_id_rsa
+    dest: /home/{{localhost_username}}/.ssh
+    owner: "{{localhost_username}}"
+    group: "{{localhost_username}}"
+    mode: 0600
+
+- name: Enable SSH agent in ~/.bashrc
+  lineinfile:
+    path: /home/{{localhost_username}}/.bashrc
+    state: present
+    line: |
+      eval `ssh-agent -s`
+
+- name: Add private SSH key in ~/.bashrc to be added to ssh-agent
+  lineinfile:
+    path: /home/{{localhost_username}}/.bashrc
+    state: present
+    create: yes
+    line: |
+      ssh-add /home/{{localhost_username}}/.ssh/eos_id_rsa

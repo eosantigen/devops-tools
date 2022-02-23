@@ -1,0 +1,143 @@
+- name: Touch /mnt/monitoring/events/event_timestamps
+  file:
+    path: /mnt/monitoring/events/event_timestamps
+    state: touch
+
+- name: Fetch /mnt/monitoring/events/event_timestamps contents
+  debug:
+    var: item
+  with_items: "{{lookup('file', '/mnt/monitoring/events/event_timestamps', lstrip='yes', rstrip='yes').splitlines() }}"
+  register: file_content
+
+- name: Show file content
+  debug:
+    msg: "{{file_content}}"
+  register: file_content_output
+
+- name: Strip timestamps of TZ\n 
+  debug:
+    var: item
+  with_items: "{{ file_content_output | json_query('msg.results[*].item') | regex_replace('T|Z|/\n/gm', ' ')}}"
+  register: timestamp_list_stripped
+  when: file_content_output | json_query('msg[*].results') != []
+
+- name: Show file_content_output
+  debug:
+    var: timestamp_list_stripped
+  register: check_empty_output
+
+- name: Get max
+  debug:
+    var: item
+  with_items: "{{timestamp_list_stripped | json_query('results[*].item') | max}}"
+  register: timestamp_list_stripped_max
+  when: timestamp_list_stripped is not skipped
+  ignore_errors: True
+  
+- name: Fetch events (without previous timestamp)
+  influxdb_query:
+    hostname: influxdb.monitoring
+    database_name: k8s
+    port: 8086
+    validate_certs: no
+    query: SELECT "namespace_name", "object_name", "reason", "message" FROM "events" WHERE "namespace_name" =~ /spark-operator|metis/ AND "reason" =~ /Failed|BackOff|Killing|Error/ AND "time" >= now()-5m AND "message" !~ /liveness probe/ AND "object_name" !~ /cronjob/
+  register: query1
+  when: timestamp_list_stripped.skipped is defined and timestamp_list_stripped.skipped == true
+
+- name: Fetch events (with previous timestamp)
+  influxdb_query:
+    hostname: influxdb.monitoring
+    database_name: k8s
+    port: 8086
+    validate_certs: no
+    query: SELECT "namespace_name", "object_name", "reason", "message" FROM "events" WHERE "namespace_name" =~ /spark-operator|metis/ AND "reason" =~ /Failed|BackOff|Killing|Error/ AND "time" > '{{item.rstrip()}}' AND "message" !~ /liveness probe/ AND "object_name" !~ /cronjob/
+  register: query2
+  when: timestamp_list_stripped is not skipped
+  with_items: "{{ timestamp_list_stripped_max | json_query('results[*].item') }}"
+
+- name: Register timestamp list
+  debug:
+    var: item
+  with_items: "{{ query1 | json_query('query_results[*].[time]') }}"
+  register: timestamp_list
+
+- name: Register timestamp list 2
+  debug:
+    var: item
+  with_items: "{{ query2 | json_query('results[*].query_results[*].[time]') }}"
+  register: timestamp_list_2
+
+- name: Show timestamp_list_with_previous_timestamp
+  debug:
+    var: item
+  with_items: "{{ timestamp_list_2 | json_query('results[*].item') }}"
+  register: timestamp_list_items_2
+
+- name: Show timestamp_list
+  debug:
+    var: item
+  with_items: "{{ timestamp_list | json_query('results[*].item') }}"
+  register: timestamp_list_items
+
+- name: Write timestamps to file 1
+  lineinfile:
+    line: "{{item.item}}"
+    path: /mnt/monitoring/events/event_timestamps
+    create: yes
+    state: present
+  with_items: "{{timestamp_list_items.results}}"
+  when: query1 is defined and item.item !=''
+
+- name: Write timestamps to file 2
+  lineinfile:
+    line: "{{item.item}}"
+    path: /mnt/monitoring/events/event_timestamps
+    create: yes
+    state: present
+  with_items: "{{timestamp_list_items_2.results}}"
+  when: query2 is defined and item.item !=''
+
+- name: Clear timestamp file - keep only last timestamp
+  shell: sed -ni '1h;1!H;${;g;s/.*\n\(\(.*\n\)\{1\}\)/\1/;p;}' /mnt/monitoring/events/event_timestamps
+
+- name: Notify Slack in general 1
+  slack:
+    token: '{{slack_api_token}}'
+    channel: '{{slack_channel_prod}}'
+    msg: '`{{item}}` _(Time in UTC)_'
+    color: danger
+  loop: "{{ query1 | json_query('query_results[*].[time, object_name, reason, message]') }}"
+  when: query1 is skipped == false and item !=''
+  ignore_errors: True
+
+- name: Notify Slack in general 2
+  slack:
+    token: '{{slack_api_token}}'
+    channel: '{{slack_channel_prod}}'
+    msg: '`{{item}}` _(Time in UTC)_'
+    color: danger
+  with_items: "{{ query2 | json_query('results[*].query_results[*].[time, object_name, reason, message]') }}"
+  when: query2 is skipped == false and item !=''
+  ignore_errors: True
+
+- name: Notify Slack - for Spark/Cassandra failure - query1
+  slack:
+    token: '{{slack_api_token}}'
+    channel: '{{slack_channel_prod}}'
+    msg: '`{{item}}` _(Time in UTC)_ <@{{slack_user_id_ntavli}}>'
+    color: danger
+    link_names: 1
+  loop: "{{ query1 | json_query('query_results[*].[time, object_name, reason, message]') }}"
+  when: item is match(".*spark.*")
+  ignore_errors: True
+
+- name: Notify Slack - for Spark/Cassandra failure - query2
+  slack:
+    token: '{{slack_api_token}}'
+    channel: '{{slack_channel_prod}}'
+    msg: '`{{item}}` _(Time in UTC)_ <@{{slack_user_id_ntavli}}>'
+    color: danger
+    link_names: 1
+  with_items: "{{ query2 | json_query('results[*].query_results[*].[time, object_name, reason, message]') }}"
+  when: item is match(".*spark.*")
+  ignore_errors: True
