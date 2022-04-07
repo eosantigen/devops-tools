@@ -10,10 +10,12 @@
 - GitHub Desktop
 - Visual Studio Code
 - SDKman _for JDK, Groovy, Gradle, Maven_
-- Jira Cloud _(optional for MacOS)_
 - BoostNote
 - Meld
 - IntelliJ IDEA
-- Insomnia REST Client
+- Postman REST Client
 - Python
+- Java
 - Microk8s
+- VirtualBox or Qemu
+- Ubuntu Desktop & Ubuntu Server (LTS)
