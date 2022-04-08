@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# Installs nodejs from the Linux binary package
-# ~/bin/node ...etc...
+# Installs nodejs from the binary package
 # RTFM : https://github.com/nodejs/help/wiki/Installation
 
 
@@ -20,7 +19,9 @@ install_on_linux() {
 
   wget -c --directory-prefix ${BIN_DIR} ${VERSION_URL__LINUX} --show-progress
   tar -xvf ${BIN_DIR}/node-v${VERSION}-linux-x64.tar.xz -C ${BIN_DIR}
-  ln -s ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/node ${BIN_DIR}/node-${VERSION}
+  ln -s ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/node 	${BIN_DIR}/node
+  ln -s ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/npm 	${BIN_DIR}/npm-node-${VERSION}
+  ln -s ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/npx 	${BIN_DIR}/npx-node-${VERSION}
   rm ${BIN_DIR}/node-v${VERSION}-linux-x64.tar.xz
 
   echo "DONE. BYE."
@@ -53,7 +54,7 @@ check_platform_and_fetch_package() {
 
   [[ $(uname -a | grep FreeBSD) ]]
   check_platform__freebsd=$?
-  
+
   if [[ check_platform__freebsd -eq 0 ]]; then
     PLATFORM="FreeBSD"
   fi
