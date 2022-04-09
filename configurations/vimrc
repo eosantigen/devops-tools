@@ -1,4 +1,6 @@
 autocmd BufWritePre * %s/\s\+$//e
 set ff=unix
 set number
+:hi CursorLine   cterm=NONE ctermbg=black ctermfg=green
+:set cursorline
 syntax on

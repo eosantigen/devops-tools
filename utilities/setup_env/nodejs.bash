@@ -28,14 +28,6 @@ install_on_linux() {
 
 }
 
-# FREEBSD
-install_on_freebsd() {
-
-  VERSION_URL__FREEBSD="https://nodejs.org/dist/v16.14.2/node-v16.14.2-darwin-arm64.tar.gz"
-  return
-
-}
-
 # MACOS (aka DARWIN)
 install_on_macos() {
 
@@ -61,13 +53,6 @@ check_platform_and_fetch_package() {
 
   if [[ check_platform__linux -eq 0 ]]; then
     install_on_linux
-  fi
-
-  [[ $(uname -a | grep FreeBSD) ]]
-  check_platform__freebsd=$?
-
-  if [[ check_platform__freebsd -eq 0 ]]; then
-    install_on_linux # lets test this.
   fi
 
   [[ $(uname -a | grep Darwin) ]]
