@@ -6,10 +6,6 @@
 
 BIN_DIR=$HOME/bin
 
-check_bin_dir() {
-  [ -d ${BIN_DIR} ]
-}
-
 # LINUX
 install_on_linux() {
 
