@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {APP_NAME}
+  name: {APP_NAME}
+  namespace: cloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {APP_NAME}
+  template:
+    metadata:
+      labels:
+        app: {APP_NAME}
+    spec:
+      containers:
+      - name: {APP_NAME}
+        image: {DEVELOP_DOCKER_REPOSITORY}/{APP_NAME}
+        imagePullPolicy: Always
+        env:
+        - name: WEB_HOOK_SLACK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: WEB_HOOK_SLACK_TOKEN
+              name: slack-keys
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+      restartPolicy: Always
+      tolerations:
+        - key: "cloud"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      nodeSelector:
+        cloud: "true"
+      imagePullSecrets: 
+      - name: registry-keys
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {APP_NAME}
+  namespace: cloud
+spec:
+  ports:
+  - port: 8000
+    name: http
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: {APP_NAME}
