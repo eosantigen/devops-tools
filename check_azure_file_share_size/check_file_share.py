@@ -40,13 +40,14 @@ def directory_total():
 
     file_size_sum = sum(files_with_sizes.values())
 
-    print("\nBiggest file for directory... " + f"{DIRECTORY_PATH}: " + max(files_with_sizes, key=files_with_sizes.get) + "\n" + 
-            "Biggest file size for directory... " + f"{DIRECTORY_PATH}: " + f"{datasize.DataSize(max(files_with_sizes.values())):GB}" + "\n" +
-            "Total for directory... " + f"{DIRECTORY_PATH}: " + f"{datasize.DataSize(file_size_sum):TB}")
+    print("\nBiggest file for directory: " + f"{DIRECTORY_PATH} ........" + max(files_with_sizes, key=files_with_sizes.get) + "\n" + 
+            "Biggest file size for directory: " + f"{DIRECTORY_PATH} ........ " + f"{datasize.DataSize(max(files_with_sizes.values())):GB}" + "\n" +
+            "Total for directory: " + f"{DIRECTORY_PATH} ........ " + f"{datasize.DataSize(file_size_sum):TB}")
+
 
 def share_total():
 
-    print("Size for entire File Share..." + " " + directory.share_name + " : " + f"{datasize.DataSize(share_client.get_share_stats()):TB}")
+    print("Size for entire File Share: " + directory.share_name + " ........ " + f"{datasize.DataSize(share_client.get_share_stats()):TB}")
     
     if  f"{datasize.DataSize(share_client.get_share_stats()):TB}"  >= "3.5":
         print("OOPS! - CHECK SIZE FOR FILE SHARE: " + f"{directory.share_name}")
