@@ -19,6 +19,7 @@
     name:
       - code
       - dbeaver-ce
+      - postman
     classic: yes
   when: ansible_os_family == "Debian"
   become: yes
