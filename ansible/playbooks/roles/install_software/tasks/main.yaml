@@ -10,6 +10,7 @@
       - git
       - tree
       - ffmpeg
+      - moc
       - fonts-powerline
     state: latest
   when: ansible_os_family == "Debian"
