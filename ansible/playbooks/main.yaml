@@ -3,7 +3,10 @@
 - hosts: "{{host}}"
 
   roles:
-    - "{{role}}" # how to add multiple roles in a prompt?
+    - install_software
+    - install_docker
+    - setup_configurations/git
+    - setup_configurations/ssh
 
   vars_prompt:
     - name: host
@@ -11,4 +14,4 @@
       private: no
 
   vars_files:
-    - param/variables.yaml
+    - ../params/variables.yaml

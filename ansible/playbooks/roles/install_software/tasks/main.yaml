@@ -1,0 +1,58 @@
+- name: Install software with APT
+  apt:
+    update_cache: yes
+    name:
+      - curl
+      - zsh
+      - terminator
+      - conky
+      - vim
+      - git
+      - tree
+      - fonts-powerline
+    state: latest
+  when: ansible_os_family == "Debian"
+  become: yes
+
+- name: Install software with SNAP
+  snap:
+    name:
+      - code
+      - dbeaver-ce
+    classic: yes
+  when: ansible_os_family == "Debian"
+  become: yes
+  
+- name: Install Oh My Zsh
+  shell: curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+  
+- name: Install asdf (for managing kubectl versions)
+  ansible.builtin.git:
+    repo: https://github.com/asdf-vm/asdf.git
+    refspec: v0.10.0
+    dest: "{{ansible_env.HOME}}/.asdf"
+    
+- name: Configure asdf
+  ansible.builtin.lineinfile:
+    path: "{{item}}"
+    line: . $HOME/.asdf/asdf.sh
+    create: yes
+  loop:
+    - "{{ansible_env.HOME}}/.profile"
+    - "{{ansible_env.HOME}}/.bashrc"
+    - "{{ansible_env.HOME}}/.zshrc"
+    
+- name: Install SDKMan
+  shell: curl -s "https://get.sdkman.io" | bash
+    
+- name: Configure SDKMan
+  ansible.builtin.lineinfile:
+    path: "{{item}}"
+    line: |
+      export SDKMAN_DIR="$HOME/.sdkman"
+      [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+  loop:
+    - "{{ansible_env.HOME}}/.profile"
+    - "{{ansible_env.HOME}}/.bashrc"
+    - "{{ansible_env.HOME}}/.zshrc"
+  
