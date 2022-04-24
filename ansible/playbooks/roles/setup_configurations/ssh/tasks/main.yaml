@@ -31,7 +31,6 @@
     state: present
     line: eval `ssh-agent -s`
   loop:
-    - "{{ansible_env.HOME}}/.profile"
     - "{{ansible_env.HOME}}/.bashrc"
     - "{{ansible_env.HOME}}/.zshrc"
 
