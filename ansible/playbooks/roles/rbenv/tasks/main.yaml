@@ -18,7 +18,6 @@
       export PATH="$HOME/bin/rbenv/bin:$PATH"
       eval "$(rbenv init - bash)"
   loop:
-    - "{{ansible_env.HOME}}/.profile"
     - "{{ansible_env.HOME}}/.bashrc"
     - "{{ansible_env.HOME}}/.zshrc"
     

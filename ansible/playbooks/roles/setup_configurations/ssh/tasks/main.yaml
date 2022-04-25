@@ -42,6 +42,5 @@
     create: yes
     line: ssh-add $HOME/.ssh/eos_id_rsa
   loop:
-    - "{{ansible_env.HOME}}/.profile"
     - "{{ansible_env.HOME}}/.bashrc"
     - "{{ansible_env.HOME}}/.zshrc"

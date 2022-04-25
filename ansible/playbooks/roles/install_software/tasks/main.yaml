@@ -41,7 +41,6 @@
     line: . $HOME/.asdf/asdf.sh
     create: yes
   loop:
-    - "{{ansible_env.HOME}}/.profile"
     - "{{ansible_env.HOME}}/.bashrc"
     - "{{ansible_env.HOME}}/.zshrc"
     
@@ -55,7 +54,6 @@
       export SDKMAN_DIR="$HOME/.sdkman"
       [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
   loop:
-    - "{{ansible_env.HOME}}/.profile"
     - "{{ansible_env.HOME}}/.bashrc"
     - "{{ansible_env.HOME}}/.zshrc"
   
