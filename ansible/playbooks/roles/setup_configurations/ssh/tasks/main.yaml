@@ -24,17 +24,16 @@
     group: "{{username}}"
     mode: 0600
 
-- name: Enable SSH agent in ~/.bashrc
+- name: Enable SSH agent in ~/.profile
   ansible.builtin.lineinfile:
     path: "{{item}}"
     insertbefore: 'export SDKMAN_DIR'
     state: present
     line: eval `ssh-agent -s`
   loop:
-    - "{{ansible_env.HOME}}/.bashrc"
-    - "{{ansible_env.HOME}}/.zshrc"
+    - "{{ansible_env.HOME}}/.profile"
 
-- name: Add private SSH key in ~/.bashrc to be added to ssh-agent
+- name: Add private SSH key in ~/.profile to be added to ssh-agent
   ansible.builtin.lineinfile:
     path: "{{item}}"
     insertbefore: 'export SDKMAN_DIR'
@@ -42,5 +41,4 @@
     create: yes
     line: ssh-add $HOME/.ssh/eos_id_rsa
   loop:
-    - "{{ansible_env.HOME}}/.bashrc"
-    - "{{ansible_env.HOME}}/.zshrc"
+    - "{{ansible_env.HOME}}/.profile"

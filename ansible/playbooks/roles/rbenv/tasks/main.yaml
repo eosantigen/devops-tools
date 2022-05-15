@@ -17,9 +17,9 @@
     line: |
       export PATH="$HOME/bin/rbenv/bin:$PATH"
       eval "$(rbenv init - bash)"
+      eval "$(rbenv init - zsh)"
   loop:
-    - "{{ansible_env.HOME}}/.bashrc"
-    - "{{ansible_env.HOME}}/.zshrc"
+    - "{{ansible_env.HOME}}/.profile"
     
 - name: Install ruby-build plugin
   ansible.builtin.git:
