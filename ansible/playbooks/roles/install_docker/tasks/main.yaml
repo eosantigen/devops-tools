@@ -35,13 +35,14 @@
   apt:
     update_cache: yes
     name:
+      - docker-compose
       - docker-ce
       - docker-ce-cli
       - containerd.io
     state: latest
   when: ansible_os_family == "Debian"
   become: yes
-  
+
 # Clean repository
 
 - name: Clean repository
@@ -54,7 +55,7 @@
 # The docker module needs to be installed for ansible to handle it
 
 - name: Install Python prerequisites
-  pip: 
+  pip:
     name: docker
   become: yes
 
