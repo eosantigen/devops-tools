@@ -4,7 +4,6 @@
     name:
       - curl
       - zsh
-      - terminator
       - conky
       - vim
       - git
@@ -28,6 +27,7 @@
   
 - name: Install Oh My Zsh
   shell: curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh -
+  ignore_errors: yes
   
 - name: Install asdf (for managing kubectl versions)
   ansible.builtin.git:

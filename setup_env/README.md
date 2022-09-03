@@ -1,4 +1,4 @@
-# HINTS
+# NOTE
 
 If your ~/.profile contains:
 
@@ -19,3 +19,8 @@ This is what the scripts do.
 ## Nodejs
 
 The script keeps the `$HOME/bin/node` binary always to the version you have last chosen on the script parameter.
+
+# USAGE
+
+`./nodejs.bash -v 16.17.0`
+
