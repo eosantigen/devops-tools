@@ -3,10 +3,11 @@
 - hosts: "{{host}}"
 
   roles:
-    - install_software
-    - install_docker
-    - setup_configurations/git
-    - setup_configurations/ssh
+    #- install_software
+    #- install_docker
+    #- setup_configurations/git
+    #- setup_configurations/ssh
+    - setup_configurations/config_files
     - rbenv
 
   vars_prompt:
