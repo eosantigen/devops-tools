@@ -40,7 +40,7 @@
     database_name: k8s
     port: 8086
     validate_certs: no
-    query: SELECT "namespace_name", "object_name", "reason", "message" FROM "events" WHERE "namespace_name" =~ /spark-operator|metis/ AND "reason" =~ /Failed|BackOff|Killing|Error/ AND "time" >= now()-5m AND "message" !~ /liveness probe/ AND "object_name" !~ /cronjob/
+    query: SELECT "namespace_name", "object_name", "reason", "message" FROM "events" WHERE "namespace_name" =~ /ingress-nginx|devaweb/ AND "reason" =~ /Failed|BackOff|Killing|Error/ AND "time" >= now()-5m AND "message" !~ /liveness probe/ AND "object_name" !~ /cronjob/
   register: query1
   when: timestamp_list_stripped.skipped is defined and timestamp_list_stripped.skipped == true
 
@@ -50,7 +50,7 @@
     database_name: k8s
     port: 8086
     validate_certs: no
-    query: SELECT "namespace_name", "object_name", "reason", "message" FROM "events" WHERE "namespace_name" =~ /spark-operator|metis/ AND "reason" =~ /Failed|BackOff|Killing|Error/ AND "time" > '{{item.rstrip()}}' AND "message" !~ /liveness probe/ AND "object_name" !~ /cronjob/
+    query: SELECT "namespace_name", "object_name", "reason", "message" FROM "events" WHERE "namespace_name" =~ /ingress-nginx|devaweb/ AND "reason" =~ /Failed|BackOff|Killing|Error/ AND "time" > '{{item.rstrip()}}' AND "message" !~ /liveness probe/ AND "object_name" !~ /cronjob/
   register: query2
   when: timestamp_list_stripped is not skipped
   with_items: "{{ timestamp_list_stripped_max | json_query('results[*].item') }}"

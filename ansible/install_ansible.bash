@@ -1,8 +1,6 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 
 ANSIBLE_VERSION="2.9.9"
-
 
 if [ -x /sbin/apk ]; then
     apk update && apk add py3-pynacl musl-dev gcc gcc-dev libffi-dev py3-cffi openssl-dev python3

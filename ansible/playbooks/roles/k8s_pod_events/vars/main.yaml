@@ -1,5 +1,5 @@
 # SLACK Details
 slack_channel_dev: '#dev-k8s-alerts'
-slack_channel_prod: '#k8s-alerts-bak'
+slack_channel_prod: '#prod-k8s-alerts'
 slack_user_id_ntavli: UBQFDUY1W
 slack_api_token: your-token-here
