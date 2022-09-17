@@ -16,8 +16,8 @@
 
 - name: Add Docker official GPG key
   apt_key:
-    keyserver: https://download.docker.com/linux/ubuntu/gpg
-    id: 0EBFCD88
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
   when: ansible_os_family == "Debian"
   become: yes
 
@@ -25,7 +25,8 @@
 
 - name: Add Docker repository
   apt_repository:
-     repo: deb https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
+    update_cache: yes
+    repo: deb https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
   when: ansible_os_family == "Debian"
   become: yes
 
@@ -36,6 +37,7 @@
     update_cache: yes
     name:
       - docker-compose
+      - docker-compose-plugin
       - docker-ce
       - docker-ce-cli
       - containerd.io
@@ -69,7 +71,7 @@
     name: docker
   become: yes
 
-- name: Add custom bridged Docker net 'supernet'
+- name: Add custom bridged net 'devanet'
   docker_network:
-    name: supernet
+    name: devanet
   become: yes

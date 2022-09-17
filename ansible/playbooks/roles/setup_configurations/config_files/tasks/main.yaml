@@ -1,5 +1,4 @@
 # source $ZSH/oh-my-zsh.sh
-
 - name: Source $HOME/.profile
   ansible.builtin.lineinfile:
     path: "{{item}}"
