@@ -5,3 +5,8 @@
 **/.terraform/*
 **/.terraform.lock.hcl
 **/terraform.tfstate.d/*
+
+# Django
+__pycache__
+migrations
+db.sqlite3
