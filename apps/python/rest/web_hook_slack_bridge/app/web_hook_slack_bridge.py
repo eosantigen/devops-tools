@@ -4,9 +4,7 @@ import json
 import time
 import os
 from slack_sdk.webhook import WebhookClient
-from fastapi import FastAPI
-from fastapi import Request
-
+from fastapi import FastAPI, Request
 
 serve = FastAPI()
 
