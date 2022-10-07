@@ -9,6 +9,7 @@ export ANSIBLE_PIP_VERSION="2.9.9"
 # PATHS
 
 export BASE_PATH="$HOME/devops-tools/terraform"
+
 export TERRAFORM_EXECUTABLE_PATH="/usr/local/bin"
 export PLANS_PATH="/tmp"
 export CLIENTS_PATH="$BASE_PATH/azure/clients"

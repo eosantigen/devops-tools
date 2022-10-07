@@ -19,7 +19,7 @@ ANSIBLE_EXECUTABLE_PATH = "/usr/local/bin"
 
 ARM_CLIENT_ID="" # adb-CLIENT_NAME-admin
 ARM_CLIENT_SECRET=""
-ARM_TENANT_ID="a7227308-90ad-4f8e-b263-1ee0230b48f1"
+ARM_TENANT_ID=""
 ARM_SUBSCRIPTION_ID="" # CLIENT_NAME subscription ID
 
 # DATABRICKS WORKSPACE
@@ -30,7 +30,7 @@ databricks_network_security_group_name = "databricks-nsg-CLIENT_NAME"
 databricks_resource_group_name = "rg-databricks-CLIENT_NAME"
 databricks_resource_group_azure_location = "westeurope"
 databricks_resource_group_iam_contributors = [
-  "f81eb762-16dc-4a37-ab75-73a8d83ea4d4", # DatabricksAdmins
+  "", # DatabricksAdmins
 ]
 databricks_resource_group_iam_readers = []
 databricks_vnet_name = "vnet-databricks-CLIENT_NAME"
@@ -113,7 +113,7 @@ secrets = {
 
   metis-aad-auth-endpoint = {
     scope = "common"
-    value = "https://login.microsoftonline.com/a7227308-90ad-4f8e-b263-1ee0230b48f1/oauth2/token"
+    value = ""
   }
 
   datalake-url = {
@@ -152,24 +152,21 @@ secrets = {
 # STORAGE GLOBAL
 
 # add public static ips of client and of our HQ
-storage_account_network_rules_ip_rules = [
-  "62.74.235.162", # METIS HQ 1
-  "80.106.183.92", # METIS HQ 2
-] 
+storage_account_network_rules_ip_rules = [] 
 storage_account_network_rules_default_action = "Deny"
 storage_account_resource_group_iam_contributors = []
 storage_account_resource_group_iam_readers = [
-  "f81eb762-16dc-4a37-ab75-73a8d83ea4d4", # DatabricksAdmins
+  "", # DatabricksAdmins
   "", # rg-CLIENT_NAME-users
   "", # adb-CLIENT_NAME-user
 ]
 storage_account_resource_group_iam_storage_blob_data_readers = [
-  "f81eb762-16dc-4a37-ab75-73a8d83ea4d4", # DatabricksAdmins
+  "", # DatabricksAdmins
   "", # rg-CLIENT_NAME-users
   "", # adb-CLIENT_NAME-user
 ]
 storage_account_resource_group_iam_storage_blob_data_contributors = [
-  "f3daadde-3d90-41ed-87bb-f08ffcaf731b", # adb-metis-admin
+  "", # adb-admin
   "", # adb-CLIENT_NAME-contributor
 ]
 ## KIND: DATALAKE
