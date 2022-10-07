@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # USAGE: ./client_init.sh -c <CLIENT_NAME>
 # Accepts user input parameter with -c

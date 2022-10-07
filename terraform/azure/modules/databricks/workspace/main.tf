@@ -2,6 +2,19 @@
 * Creates an Azure Databricks workspace with optional VNet injection (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-inject).
 */
 
+# --CAUTION
+
+# UNCOMMENT THIS **ONLY IF YOU NEED TO IMPORT** THE FOLLOWING RESOURCES INTO THE STATE.
+# OTHERWISE, IT IS INHERITED FROM THE PARENT MODULE/DEPLOYMENT.
+
+# provider "azurerm" {
+#     features {}
+#     # subscription_id = var.client_subscription # USE WITH EXTRA *CAUTION - normally we switch the Subscription through az cli*.
+#     skip_provider_registration = false
+# }
+# --CAUTION END
+
+
 data "azurerm_virtual_network" "databricks_vnet" {
     name = var.databricks_vnet_name
     resource_group_name = var.databricks_resource_group_name
@@ -130,6 +143,6 @@ resource "null_resource" "notify_slack" {
  provisioner "local-exec" {
 
    working_dir = "../../../ansible/notify_slack/plays" # EXTRA CARE - relative to this file . May not work in other files.
-   command = "${var.ANSIBLE_EXECUTABLE_PATH}/ansible-playbook databricks_workspace.yaml -e workspace_url=${azurerm_databricks_workspace.adb.workspace_url} -e client_name=${lookup(var.client_tags, "ClientName")}"
+   command = "${var.ANSIBLE_EXECUTABLE_PATH}/ansible-playbook databricks.yaml -e workspace_url=${azurerm_databricks_workspace.adb.workspace_url} -e client_name=${lookup(var.client_tags, "ClientName")}"
  }
 }

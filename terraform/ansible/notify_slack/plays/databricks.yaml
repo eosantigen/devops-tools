@@ -9,6 +9,6 @@
       slack:
         token: '{{slack_api_token}}'
         channel: '#ansible'
-        msg: '@data-science-team Storage `{{storage_account_name}}` for client `{{client_name}}` is ready.'
+        msg: '@data-science-team Databricks Workspace for client `{{client_name}}` at `{{workspace_url}}` . Please wait for extra user provisioning confirmation on this thread...'
         color: good
         link_names: 1

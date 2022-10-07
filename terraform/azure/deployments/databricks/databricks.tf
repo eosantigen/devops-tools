@@ -1,5 +1,4 @@
 terraform {
-    backend "azurerm" {}
     required_version = "~>1.1"
     required_providers {
         azurerm = {
@@ -19,20 +18,11 @@ provider "null" {
 
 provider "azurerm" {
     features {}
+    # subscription_id = var.client_subscription # USE WITH EXTRA *CAUTION - normally we switch the Subscription through az cli*.
     skip_provider_registration = false
-    client_id = var.ARM_CLIENT_ID
-    client_secret = var.ARM_CLIENT_SECRET
-    subscription_id = var.ARM_SUBSCRIPTION_ID
-    tenant_id = var.ARM_TENANT_ID
 }
 
 # VARIABLES DECLARATION
-
-## AUTH
-variable ARM_CLIENT_ID {}
-variable ARM_CLIENT_SECRET {}
-variable ARM_TENANT_ID {}
-variable ARM_SUBSCRIPTION_ID {}
 
 ## GENERAL 
 variable "client_tags" {}
@@ -66,7 +56,7 @@ module "resource_group" {
 
 
 module "network" {
-    source = "../../modules/databricks/network"
+    source = "../../modules/virtual_network"
     virtual_network_name = var.databricks_vnet_name
     virtual_network_location = var.databricks_resource_group_azure_location
     virtual_network_resource_group_name = var.databricks_resource_group_name

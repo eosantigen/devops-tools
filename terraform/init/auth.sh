@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Exit immediately if a command fails. Deactivating this option will output massive and unnecesarry error stacktraces. Keep it clean with this option!
 set -e
@@ -7,9 +7,6 @@ source env.sh
 
 # here, if not already logged-in with Azure CLI, this script exits with error code 1, due to the above setting "set -e".
 
-# if [ -v ARM_CLIENT_ID ]; then
-#     echo -e "\nProceeding with Service Principal authentication\n----------------------"
-# else
 echo -e "\n- CHECK - Existing Azure Authentication\n----------------------"
 
 az_account=$(az account show)
@@ -23,7 +20,7 @@ subscription_name=$(echo "${az_account}" | ${_python} -c 'import sys,json; print
 subscription_id=$(echo "${az_account}" | ${_python} -c 'import sys,json; print(json.load(sys.stdin)["id"])')
 user_type=$(echo "${az_account}" | ${_python} -c 'import sys,json; print(json.load(sys.stdin)["user"]["type"])')
 user_name=$(echo "${az_account}" | ${_python} -c 'import sys,json; print(json.load(sys.stdin)["user"]["name"])')
-[ -z "${user_type}" ] || [ -z "${user_name}" ] && exit 1
+# [ -z "${user_type}" ] || [ -z "${user_name}" ] && exit 1
 if [ "${user_type}" == "servicePrincipal" ]; then
     echo -e "- ERROR - Authenticating using the Azure CLI is only supported as a User (not a Service Principal)."
     echo -e "Please first run 'az login' with a directory administrator User Principal."
