@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Runs all Terraform commands.
 # Runs after 1) client_init.sh , 2) the manual addition of values in <client_name>.tfvars has been done.
@@ -7,7 +7,7 @@
 # set -e
 # ^ here we don't need it globally because we need to grab the exit code itself of a function.
 
-source auth.sh
+source env.sh
 
 # truncate the tf log to start clean
 truncate -s 0 $TF_LOG_PATH
@@ -29,9 +29,23 @@ file_check_deployment() {
 
 terraform_init() {
     set -e
+    
+    if [ $# -eq 2 ]; then
 
-    # $TERRAFORM_EXECUTABLE_PATH/terraform -chdir=${DEPLOYMENTS_PATH}/${DEPLOYMENT_NAME} workspace new ${CLIENT_NAME} # add check if exists.
-    $TERRAFORM_EXECUTABLE_PATH/terraform -chdir=${DEPLOYMENTS_PATH}/${DEPLOYMENT_NAME} init
+    # On the TFBACKEND__KEY value, add a trailing _ to fix the filename, because AzureRM automatically appends "env:<WORKSPACE_NAME>" to the state file inside the Azure Blob Container, as it recognizes the concept of the "workspace (env)" that we use for our infrastructure in order to maintain isolated states.
+
+    export TFBACKEND__KEY="${DEPLOYMENT_NAME}_"
+
+    # The following sourcing of the env_tfbackend.sh file must be done after the above export of the TFBACKEND_(values), otherwise it will pass blank arguments.
+
+    source $BASE_PATH/terraform/azure/env_tfbackend.sh
+
+    $TERRAFORM_EXECUTABLE_PATH/terraform -chdir=${DEPLOYMENTS_PATH}/${DEPLOYMENT_NAME} workspace select ${CLIENT_NAME}
+    $TERRAFORM_EXECUTABLE_PATH/terraform -chdir=${DEPLOYMENTS_PATH}/${DEPLOYMENT_NAME} init # <--- arguments for backend initialisation are passed to init through the TF_CLI_ARGS_init variable set centrally in env.sh.
+    else
+        echo "Wrong number of arguments."
+        exit 1
+    fi
 }
 
 terraform_plan() {
@@ -71,13 +85,16 @@ terraform_plan_to_destroy() {
     # When the -destroy option is enabled .
     # Can also export the plan to a file for inspection and also as input to the "apply" command.
 
-    if [ $# -eq 3 ]; then
+    if [ $# -eq 2 ]; then
         $TERRAFORM_EXECUTABLE_PATH/terraform -chdir=${DEPLOYMENTS_PATH}/${DEPLOYMENT_NAME} plan -var-file=${CLIENTS_PATH}/${CLIENT_NAME}.tfvars -out=${PLANS_PATH}/plan-destroy-${CLIENT_NAME}-${DEPLOYMENT_NAME} -compact-warnings -destroy
     else
         echo "Wrong number of arguments."
         exit 1
     fi
 }
+
+# TODO
+# terraform_plan_to_destroy_with_target() {}
 
 if [[ $1 == "" ]]; then
     echo "- ERROR - Requires options: -c <CLIENT_NAME> -d <DEPLOYMENT_NAME> [-t <'name.reference_name'> ] [-X]"
@@ -124,7 +141,7 @@ else
                     else
                         echo -e "- OK - Deployment file FOUND.\n"
                         echo -e "- OK - Preparing to build [${DEPLOYMENT_NAME}] for client [${CLIENT_NAME}]\n"
-                        terraform_init ${DEPLOYMENT_NAME}
+                        terraform_init ${CLIENT_NAME} ${DEPLOYMENT_NAME}
                         terraform_plan ${CLIENT_NAME} ${DEPLOYMENT_NAME}
                     fi
                 elif [ ${REPLY} != "Y" ] || [ ${REPLY} != "N" ]; then
@@ -158,8 +175,6 @@ else
                     exit 1
                 elif [ ${REPLY} == "YES-DESTROY" ]; then
                     echo -e "- OK - Preparing to DESTROY [${DEPLOYMENT_NAME}] for client [${CLIENT_NAME}]\n"
-                    # terraform_validate # set aside for now
-                    # terraform_init ${DEPLOYMENT_NAME}
                     terraform_plan_to_destroy ${CLIENT_NAME} ${DEPLOYMENT_NAME}
                 elif [ ${REPLY} != "YES-DESTROY" ] || [ ${REPLY} != "N" ]; then
                     echo "Wrong option. You must type YES-DESTROY or N."

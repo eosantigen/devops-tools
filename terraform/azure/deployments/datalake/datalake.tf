@@ -1,4 +1,5 @@
 terraform {
+    backend "azurerm" {}
     required_version = "~>1.1"
     required_providers {
         azurerm = {
@@ -18,11 +19,20 @@ provider "null" {
 
 provider "azurerm" {
     features {}
-    # subscription_id = var.client_subscription # USE WITH EXTRA *CAUTION - normally we switch the Subscription through az cli*.
     skip_provider_registration = false
+    client_id = var.ARM_CLIENT_ID
+    client_secret = var.ARM_CLIENT_SECRET
+    subscription_id = var.ARM_SUBSCRIPTION_ID
+    tenant_id = var.ARM_TENANT_ID
 }
 
 # VARIABLES DECLARATION
+
+## AUTH
+variable ARM_CLIENT_ID {}
+variable ARM_CLIENT_SECRET {}
+variable ARM_TENANT_ID {}
+variable ARM_SUBSCRIPTION_ID {}
 
 ## GENERAL 
 variable "client_tags" {}
@@ -95,12 +105,15 @@ module "datalake" {
     storage_account_nfs = var.storage_account_datalake_nfs
     storage_account_network_rules_default_action = var.storage_account_network_rules_default_action
     storage_account_network_rules_ip_rules = var.storage_account_network_rules_ip_rules
-    storage_account_network_rules_virtual_network_subnet_ids = [data.azurerm_subnet.databricks_public_subnet.id]
+    storage_account_network_rules_virtual_network_subnet_ids = [
+        data.azurerm_subnet.databricks_public_subnet.id,
+        "/subscriptions/c98c720c-69f7-4eec-b7b0-7f3c1139d427/resourceGroups/dse-prod/providers/Microsoft.Network/virtualNetworks/dse-vnet/subnets/databricks-public-vnet" # TEMPORARY VALUE - The old but current Prod DBRX public subnet. TODO.
+    ]
     storage_container = toset(var.storage_account_datalake_container)
     storage_container_access_type = var.storage_account_datalake_container_access_type
     common_tags = var.common_tags
     client_tags = var.client_tags
     ANSIBLE_EXECUTABLE_PATH = var.ANSIBLE_EXECUTABLE_PATH
 
-    depends_on = [module.resource_group,]
+    depends_on = [module.resource_group]
 }

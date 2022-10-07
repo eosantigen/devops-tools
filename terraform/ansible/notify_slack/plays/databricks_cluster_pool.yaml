@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+
+  vars_files:
+    - ../vars.yaml
+
+  tasks:
+    - name: "Notify Slack"
+      slack:
+        token: '{{slack_api_token}}'
+        channel: '#databricks'
+        msg: '@data-science-team Cluster Pool `{{ item.key }}` at `{{ databricks_workspace_name }}` is ready.'
+        with_items: "{{ cluster_pools }}"
+        color: good
+        link_names: 1
