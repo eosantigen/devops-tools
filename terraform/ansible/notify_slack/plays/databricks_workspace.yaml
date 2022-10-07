@@ -9,6 +9,6 @@
       slack:
         token: '{{slack_api_token}}'
         channel: '#devops'
-        msg: '@devops-team Storage `{{storage_account_name}}` for client `{{client_name}}` is ready.'
+        msg: '@devops-team Databricks Workspace for client `{{client_name}}` at `https://{{workspace_url}}` is ready. Please wait for extra user provisioning confirmation on this thread...'
         color: good
         link_names: 1
