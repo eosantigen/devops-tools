@@ -33,7 +33,7 @@ class GrafanaRoles(Enum):
     EDITOR = 'Editor'
     VIEWER = 'Viewer'
 
-grafana_base_url = "https://live.metis.tech"
+grafana_base_url = "https://grafana.devanet"
 grafana_endpoint = "/api/orgs/"+"gf_org_id"+"/users"
 gf_role = "" # grab from argument --gf-role
 gf_org_id = None # grab from argument --gf_org_id
@@ -53,14 +53,14 @@ def arguments():
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument("--gf-org-id", type=int, dest="gf_org_id", required=True)
     argument_parser.add_argument("--gf-role", type=str, dest="gf_role", required=True, choices=GrafanaRoles.__members__.keys())
-    
+
     args = argument_parser.parse_args()
 
     return args
 
 # Execute the request for each client_user
 def gf_request(client_user: str, gf_role: str, gf_org_id: int):
-    
+
     endpoint = grafana_endpoint.replace("gf_org_id", str(gf_org_id))
 
     loginOrEmail = client_user
@@ -144,6 +144,6 @@ if __name__ == '__main__':
 
     if parsed_arguments.gf_role in GrafanaRoles.EDITOR.name:
         add_editors(parsed_arguments.gf_org_id)
-    
+
     if parsed_arguments.gf_role in GrafanaRoles.VIEWER.name:
         add_viewers(parsed_arguments.gf_org_id)
