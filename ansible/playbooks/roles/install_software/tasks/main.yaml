@@ -15,23 +15,29 @@
   when: ansible_os_family == "Debian"
   become: yes
 
-- name: Install software with SNAP
+- name: Install software with snap
   snap:
     name:
       - code
       - postman
+      - intellij-idea-community
     classic: yes
   when: ansible_os_family == "Debian"
   become: yes
 
-- name: Install Oh My Zsh
+- name: Install OMZ
   shell: curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh -
   ignore_errors: yes
 
-- name: Install asdf (for managing kubectl versions)
+- name: Install OMZ Powerlevel
+  ansible.builtin.git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: $ZSH_CUSTOM/themes/powerlevel10k
+  ignore_errors: yes
+
+- name: Install asdf
   ansible.builtin.git:
     repo: https://github.com/asdf-vm/asdf.git
-    refspec: v0.10.0
     dest: "{{ansible_env.HOME}}/.asdf"
 
 - name: Configure asdf
@@ -48,9 +54,9 @@
 - name: Configure SDKMan
   ansible.builtin.lineinfile:
     path: "{{item}}"
+    insertafter: "EOF"
     line: |
       export SDKMAN_DIR="$HOME/.sdkman"
       [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
   loop:
     - "{{ansible_env.HOME}}/.profile"
-

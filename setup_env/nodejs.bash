@@ -41,7 +41,6 @@ install_on_macos() {
   echo "DONE. BYE."
 }
 
-
 check_platform_and_fetch_package() {
 
   [[ $(uname -a | grep Linux) ]]
@@ -62,17 +61,17 @@ check_platform_and_fetch_package() {
 
 if [[ $1 == "" ]]; then
   echo "Requires an option: -v <Nodejs version> (please prefer LTS...)"
-  exit 1
+  exit 22
 else
   while getopts "v:" option; do
     case ${option} in
       v )
-        read -p "Nodejs version has been set to : [${OPTARG}] - [y/n] ? [Default: n]: "
+        read -p "Nodejs version has been set to : [${OPTARG}] - [y/n] ? (Default: n): "
             REPLY=${REPLY:-n}
 
             if [ ${REPLY} == "n" ]; then
               echo "CANCELLED. BYE."
-              exit 1
+              exit 125
             elif [ ${REPLY} == "y" ]; then
               VERSION=${OPTARG}
               check_platform_and_fetch_package
