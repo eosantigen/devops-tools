@@ -1,0 +1,6 @@
+rclib_dir: 
+autodeploy_dir: 
+
+# SLACK Details
+slack_channel: '#devops'
+slack_api_token: 

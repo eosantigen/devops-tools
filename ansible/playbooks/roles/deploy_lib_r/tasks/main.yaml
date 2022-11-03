@@ -1,0 +1,69 @@
+- name: Make sure autodeploy_dir exists
+  file:
+    path: "{{autodeploy_dir}}"
+    state: directory
+
+- name: Make sure fetch_latest_version.py is on rclib_dir
+  copy:
+    src: fetch_latest_version.py
+    dest: "{{autodeploy_dir}}"
+    mode: 0777    
+
+- name: Add remove.R
+  lineinfile:
+    line: remove.packages("metisrclib", "/usr/local/lib/R/library")
+    path: "{{autodeploy_dir}}/remove.R"
+    create: yes
+    state: present
+
+- name: Remove current metisrclib
+  shell: R < {{autodeploy_dir}}/remove.R --no-save
+  become: yes
+
+- name: Execute script that fetches latest metisrclib_version
+  shell: "{{autodeploy_dir}}/fetch_latest_version.py"
+  register: metisrclib_version_latest
+  when: metisrclib_version is not defined
+
+- name: Show the latest version
+  debug:
+    var: metisrclib_version_latest.stdout
+  when: metisrclib_version is not defined
+
+- name: Set version
+  set_fact:
+    metisrclib_version: "{{metisrclib_version_latest.stdout}}"
+  when: metisrclib_version is not defined
+
+- name: Add version to a install.R
+  lineinfile:
+    line: install.packages("{{rclib_dir}}/metisrclib_{{metisrclib_version}}.tar.gz",lib="/usr/local/lib/R/library")
+    path: "{{autodeploy_dir}}/install.R"
+    create: yes
+    state: present
+
+- name: Version to be installed
+  debug:
+    var: metisrclib_version
+
+- name: Install metisrclib
+  shell: R < {{autodeploy_dir}}/install.R --no-save
+  become: yes
+
+  # CLEANUP
+- name: Remove files
+  shell: rm -rf {{autodeploy_dir}}/install.R
+
+- name: Restart R service
+  systemd:
+    state: restarted
+    name: rserverd
+  become: yes
+
+- name: Notify Slack
+  slack:
+    token: '{{slack_api_token}}'
+    channel: '{{slack_channel}}'
+    msg: 'R server updated with metisrclib: `{{metisrclib_version}}`'
+    color: good
+    link_names: 1
