@@ -8,7 +8,7 @@
     - setup_configurations/git
     - setup_configurations/ssh
     - setup_configurations/config_files
-    - rbenv
+    - install_rbenv
 
   vars_prompt:
     - name: host
