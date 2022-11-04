@@ -1,0 +1,51 @@
+- name: Ensure snapshot destination directory exists
+  ansible.builtin.file:
+    state: directory
+    mode: 777
+    owner: "{{ ansible_user }}"
+    path: "{{ etcd_snapshot_directory_host }}"
+    recurse: yes
+
+- name: etcdctl snapshot save
+  community.docker.docker_exec:
+    container: etcd
+    command: etcdctl snapshot save {{ etcd_snapshot_directory_container }}
+
+- name: etcdctl --write-out=table snapshot status
+  community.docker.docker_exec:
+    container: etcd
+    command: etcdctl --write-out=table snapshot status {{ etcd_snapshot_directory_container }}
+  register: etcd_snapshot_status
+
+- name: Show snapshot status
+  debug:
+    var: etcd_snapshot_status.stdout
+
+- name: Copy snapshot out of the etcd container into the host 
+  community.docker.docker:
+    docker_extra_args: cp etcd:{{ etcd_snapshot_directory_container }} {{ etcd_snapshot_directory_host }}/etcd_snapshot_$(date +%d_%m_%Y)
+
+- name: Delete snapshot from the etcd container
+  community.docker.docker_exec:
+    container: etcd
+    command: rm {{ etcd_snapshot_directory_container }}
+
+- name: Transfer snapshot to Tethys
+  ansible.builtin.shell:
+    cmd: rsync --recursive {{ etcd_snapshot_directory_host }} {{ etcd_snapshot_destination_host }}:{{ etcd_snapshot_destination_host_directory }}
+  register: transfer_status
+  ignore_errors: true
+    
+- name: Send email for the SUCCESS result
+  community.general.mail:
+    subject: Job on {{ ansible_hostname }} - SUCCESS
+    body: Succeeded for {{ etcd_snapshot_directory_host }}/etcd_snapshot_{{ ansible_date_time.day }}_{{ ansible_date_time.month }}_{{ ansible_date_time.year }}
+  delegate_to: tethys
+  when: transfer_status is succeeded
+
+- name: Send email for the FAIL result
+  community.general.mail:
+    subject: Job on {{ ansible_hostname }} - FAIL
+    body: Failed for {{ etcd_snapshot_directory_host }}/etcd_snapshot_{{ ansible_date_time.day }}_{{ ansible_date_time.month }}_{{ ansible_date_time.year }}
+  delegate_to: tethys
+  when: transfer_status is failed
