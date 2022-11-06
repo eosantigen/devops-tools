@@ -1,4 +1,4 @@
 etcd_snapshot_directory_container: /tmp/etcd_snapshot_$(date +%d_%m_%Y)
-etcd_snapshot_directory_host: /var/backups/etcd
-etcd_snapshot_destination_host: tethys
-etcd_snapshot_destination_host_directory: # TODO!
+etcd_snapshot_directory_host: /var/backups/etcd # this applies to both
+email_to:
+  - eos.antigen@gmail.com
