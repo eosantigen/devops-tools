@@ -16,7 +16,7 @@ rsync_snapshot_dc() {
 
   basename -s ${SNAPSHOT_PATH} $(cat file_list.txt) > file_list.txt
 
-  rsync --human-readable --verbose --recursive --delete-before --compress --progress --files-from=file_list.txt -e "ssh -i /root/backup.key -o StrictHostKeyChecking=no" ${SNAPSHOT_PATH} rancher@jenkins.metis.tech:/mnt/backup/dc
+  rsync --human-readable --verbose --recursive --delete-before --compress --progress --files-from=file_list.txt -e "ssh -i /root/backup.key -o StrictHostKeyChecking=no" ${SNAPSHOT_PATH} rancher@rancher.devanet:/mnt/backup/dc
 
 }
 
