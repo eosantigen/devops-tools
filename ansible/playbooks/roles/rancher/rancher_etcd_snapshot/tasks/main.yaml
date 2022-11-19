@@ -1,3 +1,4 @@
+---
 - name: Ensure snapshot destination directory exists
   ansible.builtin.file:
     state: directory
@@ -61,3 +62,4 @@
     body: Failed for {{ etcd_snapshot_directory_host }}/etcd_snapshot_{{ ansible_date_time.day }}_{{ ansible_date_time.month }}_{{ ansible_date_time.year }}
   delegate_to: tethys
   when: fetch_etcd_snapshot_status is failed
+...

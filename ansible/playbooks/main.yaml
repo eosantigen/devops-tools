@@ -1,6 +1,6 @@
 ---
-
-- hosts: "{{host}}"
+-
+  hosts: "{{ node }}"
 
   roles:
     - install_software
@@ -8,12 +8,12 @@
     - setup_configurations/git
     - setup_configurations/ssh
     - setup_configurations/config_files
-    - install_rbenv
 
   vars_prompt:
-    - name: host
+    - name: node
       prompt: host || host-group
-      private: no
+      private: False
 
   vars_files:
     - ../params/variables.yaml
+...

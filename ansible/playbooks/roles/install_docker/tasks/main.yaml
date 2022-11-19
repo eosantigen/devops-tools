@@ -1,3 +1,5 @@
+---
+
 - name: Install prerequisites for Docker
   apt:
     update_cache: yes
@@ -10,7 +12,7 @@
       - python3-setuptools
     state: latest
   when: ansible_os_family == "Debian"
-  become: yes
+  become: True
 
 # Add GPG key
 
@@ -19,7 +21,7 @@
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
   when: ansible_os_family == "Debian"
-  become: yes
+  become: True
 
 # Add Docker repository
 
@@ -28,7 +30,7 @@
     update_cache: yes
     repo: deb https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable
   when: ansible_os_family == "Debian"
-  become: yes
+  become: True
 
 # Install Docker latest version
 
@@ -43,7 +45,7 @@
       - containerd.io
     state: latest
   when: ansible_os_family == "Debian"
-  become: yes
+  become: True
 
 # Clean repository
 
@@ -52,14 +54,14 @@
     autoclean: yes
     autoremove: yes
   when: ansible_os_family == "Debian"
-  become: yes
+  become: True
 
 # The docker module needs to be installed for ansible to handle it
 
 - name: Install Python prerequisites
   pip:
     name: docker
-  become: yes
+  become: True
 
 # Systemd manage Docker service
 
@@ -69,9 +71,11 @@
     enabled: yes
     masked: no
     name: docker
-  become: yes
+  become: True
 
 - name: Add custom bridged net 'devanet'
   docker_network:
     name: devanet
-  become: yes
+  become: True
+
+...

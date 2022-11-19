@@ -19,6 +19,8 @@ RUN apk update && \
     influxdb \
     ansible==${ANSIBLE_VERSION}
 
-ADD . $HOME/k8s_pod_events
+ADD ../ansible/playbooks/roles/k8s_pod_events $HOME/k8s_pod_events
 
 WORKDIR $HOME/k8s_pod_events
+
+# ENTRYPOINT/CMD is provided through the K8s Cronjob manifest.

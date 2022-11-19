@@ -1,12 +1,12 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 
 import glob
 from distutils.version import LooseVersion
 
-rclib_packages = glob.glob('/home/metis/rlib/metisrclib_*')
+rlib_packages = glob.glob('/home/eosantigen/rlib/rlib_*')
 
-rclib_packages_versions = list(map(lambda x: x.replace('metisrclib_','').replace('.tar.gz','').replace('/home/metis/rlib/',''),rclib_packages))
+rlib_packages_versions = list(map(lambda x: x.replace('rlib_','').replace('.tar.gz','').replace('/home/eosantigen/rlib/',''),rlib_packages))
 
-rclib_packages_sorted = sorted(rclib_packages_versions, key=lambda x: LooseVersion(x), reverse=True)
+rlib_packages_sorted = sorted(rlib_packages_versions, key=lambda x: LooseVersion(x), reverse=True)
 
-print(rclib_packages_sorted[0])
+print(rlib_packages_sorted[0])

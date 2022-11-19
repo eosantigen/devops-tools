@@ -1,9 +1,10 @@
+---
 - name: Make sure autodeploy_dir exists
   file:
     path: "{{autodeploy_dir}}"
     state: directory
 
-- name: Make sure fetch_latest_version.py is on rclib_dir
+- name: Make sure fetch_latest_version.py is on rlib_dir
   copy:
     src: fetch_latest_version.py
     dest: "{{autodeploy_dir}}"
@@ -11,44 +12,44 @@
 
 - name: Add remove.R
   lineinfile:
-    line: remove.packages("metisrclib", "/usr/local/lib/R/library")
+    line: remove.packages("rlib", "/usr/local/lib/R/library")
     path: "{{autodeploy_dir}}/remove.R"
     create: yes
     state: present
 
-- name: Remove current metisrclib
+- name: Remove current rlib
   shell: R < {{autodeploy_dir}}/remove.R --no-save
-  become: yes
+  become: True
 
-- name: Execute script that fetches latest metisrclib_version
+- name: Execute script that fetches latest rlib_version
   shell: "{{autodeploy_dir}}/fetch_latest_version.py"
-  register: metisrclib_version_latest
-  when: metisrclib_version is not defined
+  register: rlib_version_latest
+  when: rlib_version is not defined
 
 - name: Show the latest version
   debug:
-    var: metisrclib_version_latest.stdout
-  when: metisrclib_version is not defined
+    var: rlib_version_latest.stdout
+  when: rlib_version is not defined
 
 - name: Set version
   set_fact:
-    metisrclib_version: "{{metisrclib_version_latest.stdout}}"
-  when: metisrclib_version is not defined
+    rlib_version: "{{rlib_version_latest.stdout}}"
+  when: rlib_version is not defined
 
 - name: Add version to a install.R
   lineinfile:
-    line: install.packages("{{rclib_dir}}/metisrclib_{{metisrclib_version}}.tar.gz",lib="/usr/local/lib/R/library")
+    line: install.packages("{{rlib_dir}}/rlib_{{rlib_version}}.tar.gz",lib="/usr/local/lib/R/library")
     path: "{{autodeploy_dir}}/install.R"
     create: yes
     state: present
 
 - name: Version to be installed
   debug:
-    var: metisrclib_version
+    var: rlib_version
 
-- name: Install metisrclib
+- name: Install rlib
   shell: R < {{autodeploy_dir}}/install.R --no-save
-  become: yes
+  become: True
 
   # CLEANUP
 - name: Remove files
@@ -58,12 +59,13 @@
   systemd:
     state: restarted
     name: rserverd
-  become: yes
+  become: True
 
 - name: Notify Slack
   slack:
     token: '{{slack_api_token}}'
     channel: '{{slack_channel}}'
-    msg: 'R server updated with metisrclib: `{{metisrclib_version}}`'
+    msg: 'R server updated with rlib: `{{rlib_version}}`'
     color: good
     link_names: 1
+...
