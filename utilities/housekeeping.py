@@ -7,7 +7,7 @@ from datetime import date, datetime
 # Declarations
 # NOTE: The strings in backup_types must match the mountpoints
 backup_types = {'devkube', 'vm', 'dc'}
-backup_path = "/Users/eosantigen/Downloads"
+backup_path = "/home/eosantigen/Downloads"
 
 def arguments():
   # Initialize argument parser
@@ -16,8 +16,8 @@ def arguments():
   argument_parser.add_argument("-t", "--backup_type", type=str, required=True, dest="type", default=None, choices=backup_types, help="The type of the backup item, which corresponds to the moutpoint.")
   # The number of backup items to keep
   argument_parser.add_argument("-k", "--keep", type=int, required=False, dest="keep", default=3, help="The number of backup items to keep.")
-  # The maximum age of a backup item in days before it gets deleted
-  argument_parser.add_argument("-a", "--max_age", type=int, required=False, dest="max_age", default=7, help="The maximum age of a backup item in days before it gets deleted.")
+  # # The maximum age of a backup item in days before it gets deleted
+  # argument_parser.add_argument("-a", "--max_age", type=int, required=False, dest="max_age", default=7, help="The maximum age of a backup item in days before it gets deleted.")
 
   args = argument_parser.parse_args()
 
@@ -34,34 +34,34 @@ def age_diff(day_start, day_end):
 # Traverse the path for list the backup items
 def list_backup_items(backup_type: str):
 
-  backup_files = []
+  backup_items = []
   tree = walk(f'{backup_path}/{backup_type}')
-  for(root, dirs, files) in tree:
+  for (root, dirs, files) in tree:
     for files in files:
-      backup_files.append(f'{backup_path}/{backup_type}/{files}')
-  yield backup_files
+      backup_items.append(f'{backup_path}/{backup_type}/{files}')
+  yield backup_items
 
-def clean(backup_type: str, keep: int, max_age: int):
+def clean(backup_type: str, keep: int):
   
   items_to_delete = []
   current_date = date.today().strftime("%Y_%m_%d")
   delete_command = "rm"
 
   # Populate a list of filenames from the Generator list_backup_items()
-  for item in list_backup_items(backup_type):
-    filename = [ f for f in item ]
-    for f in filename:
-      if current_date in f:
+  for backup_items in list_backup_items(backup_type):
+    filenames = sorted([ b for b in backup_items ], reverse=True)
+    for f in filenames[keep:]:
+      # if current_date not in f:
         print(f)
-        items_to_delete.append(f)
+          # items_to_delete.append(f)
 
-  for item_to_delete in items_to_delete:
-    print("To be deleted: ", item_to_delete)
-    system(delete_command + " " + f'{item_to_delete}')
+  # for item_to_delete in items_to_delete:
+  #   print("To be deleted: ", item_to_delete)
+    # system(delete_command + " " + f'{item_to_delete}')
 
 if __name__ == '__main__':
 
   parsed_args = arguments()
 
   if parsed_args.type in backup_types:
-    clean(backup_type=parsed_args.type, keep=parsed_args.keep, max_age=parsed_args.max_age)
+    clean(backup_type=parsed_args.type, keep=parsed_args.keep)
