@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 
-import os
-from glob import glob
+from os import system, walk
 from argparse import ArgumentParser
 from datetime import date, datetime
 
 # Declarations
 # NOTE: The strings in backup_types must match the mountpoints
 backup_types = {'devkube', 'vm', 'dc'}
-backup_items = {}
-backup_path = "/Users/eosantigen/Downloads/"
+backup_path = "/Users/eosantigen/Downloads"
 
 def arguments():
   # Initialize argument parser
@@ -37,26 +35,29 @@ def age_diff(day_start, day_end):
 def list_backup_items(backup_type: str):
 
   backup_files = []
-  tree = os.walk(backup_path+backup_type)
+  tree = walk(f'{backup_path}/{backup_type}')
   for(root, dirs, files) in tree:
-    for filename in files:
-      backup_files.append(filename)
+    for files in files:
+      backup_files.append(f'{backup_path}/{backup_type}/{files}')
   yield backup_files
 
 def clean(backup_type: str, keep: int, max_age: int):
   
+  items_to_delete = []
   current_date = date.today().strftime("%Y_%m_%d")
+  delete_command = "rm"
 
-  # Populate a set of filenames from the Generator list_backup_items()
-  for i in list_backup_items(backup_type):
-    # global filenames
-    filenames = [ f for f in i ]
-    for f in filenames:
-      print(f)
+  # Populate a list of filenames from the Generator list_backup_items()
+  for item in list_backup_items(backup_type):
+    filename = [ f for f in item ]
+    for f in filename:
+      if current_date in f:
+        print(f)
+        items_to_delete.append(f)
 
-  # backup_items_dict = backup_items.fromkeys(backup_types, filenames)
-
-  # print(backup_items_dict)
+  for item_to_delete in items_to_delete:
+    print("To be deleted: ", item_to_delete)
+    system(delete_command + " " + f'{item_to_delete}')
 
 if __name__ == '__main__':
 
