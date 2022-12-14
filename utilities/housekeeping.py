@@ -2,7 +2,7 @@
 
 from os import system, walk
 from argparse import ArgumentParser
-from datetime import date, datetime
+from datetime import date
 
 # Declarations
 # NOTE: The strings in backup_types must match the mountpoints
@@ -20,14 +20,6 @@ def arguments():
   args = argument_parser.parse_args()
 
   return args
-
-# Extract and return the days property from an age difference
-def age_diff(day_start, day_end):
-
-  day_start = datetime.strptime(day_start, "%Y_%m_%d")
-  day_end = datetime.strptime(day_end, "%Y_%m_%d")
-  
-  return abs((day_end - day_start).days)
 
 # Traverse the path for list the backup items
 def list_backup_items(backup_type: str):
