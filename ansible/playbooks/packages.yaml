@@ -2,6 +2,6 @@
 -
   hosts: "{{ nodes }}"
   roles:
-    - install_docker
-  tags: [ docker ]
+    - packages
+  tags: [ packages ]
 ...

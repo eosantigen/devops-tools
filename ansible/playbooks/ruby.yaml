@@ -2,7 +2,7 @@
 -
   hosts: "{{ nodes }}"
   roles:
-    - install_ruby
+    - ruby
   tags: [ ruby, git ]
   vars:
     rbenv_repository: https://github.com/rbenv/rbenv.git
