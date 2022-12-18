@@ -1,30 +1,20 @@
 ---
-- name: Install software with APT
+- name: Install software with apt
   apt:
     update_cache: yes
-    name:
-      - curl
-      - zsh
-      - conky
-      - vim
-      - git
-      - tree
-      - ffmpeg
-      - moc
-      - fonts-powerline
+    name: "{{ item }}"
     state: latest
+  with_items: "{{ apt_packages }}"
   when: ansible_os_family == "Debian"
-  become: True
+  become: true
 
 - name: Install software with snap
   snap:
-    name:
-      - code
-      - postman
-      - intellij-idea-community
+    name: "{{ item }}"
     classic: yes
+  with_items: "{{ snap_packages }}"
   when: ansible_os_family == "Debian"
-  become: True
+  become: true
 
 - name: Fetch OMZ
   shell: curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | zsh -
@@ -34,50 +24,34 @@
   ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k.git
     dest: $ZSH_CUSTOM/themes/powerlevel10k
-  ignore_errors: True
+  ignore_errors: true
 
 - name: Fetch asdf
   ansible.builtin.git:
     repo: https://github.com/asdf-vm/asdf.git
-    dest: "{{ansible_env.HOME}}/.asdf"
+    dest: "{{ ansible_env.HOME }}/.asdf"
     update: yes
 
 - name: Configure asdf
   ansible.builtin.lineinfile:
-    path: "{{item}}"
+    path: "{{ item }}"
     line: . $HOME/.asdf/asdf.sh
     create: yes
   loop:
-    - "{{ansible_env.HOME}}/.profile"
-
-- name: Fetch pyevn
-  ansible.builtin.git:
-    repo: https://github.com/pyenv/pyenv.git
-    dest: "{{ansible_env.HOME}}/bin/pyenv"
-    update: yes
-    
-- name: Source pyenv executable
-  ansible.builtin.lineinfile:
-    path: "{{item}}"
-    insertbefore: 'export SDKMAN_DIR'
-    state: present
-    line: |
-      export PYENV_ROOT="$HOME/bin/pyenv"
-      command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-      eval "$(pyenv init -)"
-  loop:
-    - "{{ansible_env.HOME}}/.profile"
+    - "{{ ansible_env.HOME }}/.profile"
 
 - name: Install SDKMan
   shell: curl -s "https://get.sdkman.io" | bash
 
 - name: Configure SDKMan
   ansible.builtin.lineinfile:
-    path: "{{item}}"
+    path: "{{ item }}"
     insertafter: "EOF"
     line: |
       export SDKMAN_DIR="$HOME/.sdkman"
       [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
   loop:
-    - "{{ansible_env.HOME}}/.profile"
+    - "{{ ansible_env.HOME }}/.profile"
+    - "{{ ansible_env.HOME }}/.zprofile"
+  ignore_errors: true
 ...

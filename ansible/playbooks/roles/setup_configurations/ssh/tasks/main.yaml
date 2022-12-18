@@ -1,27 +1,27 @@
 - name: Create .ssh folder if not exists
   file:
     state: directory
-    path: "{{ansible_env.HOME}}/.ssh"
+    path: "{{ ansible_env.HOME }}/.ssh"
 
 - name: Add authorised key (for remote connection)
   authorized_key:
     state: present
-    user: "{{username}}"
+    user: "{{ username }}"
     key: "{{ lookup('file', 'eos_id_rsa.pub') }}"
 
 - name: Add public SSH key in ~/.ssh
   copy:
     src: eos_id_rsa.pub
-    dest: "{{ansible_env.HOME}}/.ssh"
-    owner: "{{username}}"
-    group: "{{username}}"
+    dest: "{{ ansible_env.HOME }}/.ssh"
+    owner: "{{ username }}"
+    group: "{{ username }}"
 
 - name: Add private SSH key in ~/.ssh
   copy:
     src: eos_id_rsa
-    dest: "{{ansible_env.HOME}}/.ssh"
-    owner: "{{username}}"
-    group: "{{username}}"
+    dest: "{{ ansible_env.HOME }}/.ssh"
+    owner: "{{ username }}"
+    group: "{{ username }}"
     mode: 0600
 
 # Provided you are in a Gnome graphical environment only!

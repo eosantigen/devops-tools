@@ -1,0 +1,9 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - install_python
+  tags: [ python ]
+  vars:
+    pyenv_repository: https://github.com/pyenv/pyenv.git
+...

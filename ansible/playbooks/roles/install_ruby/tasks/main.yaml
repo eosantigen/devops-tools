@@ -1,37 +1,25 @@
 ---
 - name: Fetch rbenv
   ansible.builtin.git:
-    repo: https://github.com/rbenv/rbenv.git
-    dest: "{{ansible_env.HOME}}/bin/rbenv"
+    repo: "{{ rbenv_repository }}"
+    dest: "{{ ansible_env.HOME }}/bin/rbenv"
     update: yes
     
-- name: Source rbenv executable for zsh
+- name: Source rbenv executable
   ansible.builtin.lineinfile:
-    path: "{{item}}"
+    path: "{{ item }}"
     insertbefore: 'export SDKMAN_DIR'
     state: present
     line: |
       export PATH="$HOME/bin/rbenv/bin:$PATH"
-      eval "$(rbenv init - zsh)"
+      eval "$(rbenv init -)"
   loop:
-    - "{{ansible_env.HOME}}/.zprofile"
-  when: ansible_env.SHELL == "/bin/zsh"
-
-- name: Source rbenv executable for bash
-  ansible.builtin.lineinfile:
-    path: "{{item}}"
-    insertbefore: 'export SDKMAN_DIR'
-    state: present
-    line: |
-      export PATH="$HOME/bin/rbenv/bin:$PATH"
-      eval "$(rbenv init - bash)"
-  loop:
-    - "{{ansible_env.HOME}}/.profile"
-  when: ansible_env.SHELL == "/bin/bash"
+    - "{{ ansible_env.HOME }}/.profile"
+    - "{{ ansible_env.HOME }}/.zprofile"
     
 - name: Install ruby-build plugin
   ansible.builtin.git:
-    repo: https://github.com/rbenv/ruby-build.git
-    dest: "{{ansible_env.HOME}}/.rbenv/plugins/ruby-build"
+    repo: "{{ ruby_build_repository }}"
+    dest: "{{ ansible_env.HOME }}/.rbenv/plugins/ruby-build"
     update: yes
 ...

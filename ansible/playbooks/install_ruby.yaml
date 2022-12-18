@@ -4,4 +4,7 @@
   roles:
     - install_ruby
   tags: [ ruby, git ]
+  vars:
+    rbenv_repository: https://github.com/rbenv/rbenv.git
+    ruby_build_repository: https://github.com/rbenv/ruby-build.git
 ...

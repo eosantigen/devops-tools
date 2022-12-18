@@ -1,0 +1,36 @@
+---
+# Ubuntu specific variables.
+############################
+snap_packages:
+- code
+- postman
+- intellij-idea-community
+- termius-app
+- firefox
+- obsidian
+apt_packages:
+- curl
+- zsh
+- conky
+- vim
+- git
+- tree
+- ffmpeg
+- moc
+- fonts-powerline
+docker_dependencies:
+- apt-transport-https
+- ca-certificates
+- curl
+- gnupg-agent
+- software-properties-common
+- python3-setuptools
+docker_packages:
+- docker-compose
+- docker-compose-plugin
+- docker-ce
+- docker-ce-cli
+- containerd.io
+gpg_url: https://download.docker.com/linux/ubuntu/gpg
+repository_url: https://download.docker.com/linux/ubuntu
+...
