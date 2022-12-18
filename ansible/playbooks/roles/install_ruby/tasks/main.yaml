@@ -16,6 +16,7 @@
   loop:
     - "{{ ansible_env.HOME }}/.profile"
     - "{{ ansible_env.HOME }}/.zprofile"
+  ignore_errors: true
     
 - name: Install ruby-build plugin
   ansible.builtin.git:

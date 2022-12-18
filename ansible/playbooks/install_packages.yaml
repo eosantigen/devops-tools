@@ -2,6 +2,6 @@
 -
   hosts: "{{ nodes }}"
   roles:
-    - install_software
-  tags: [ apt, snap, packages ]
+    - install_packages
+  tags: [ packages ]
 ...
