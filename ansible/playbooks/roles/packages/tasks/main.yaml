@@ -23,7 +23,7 @@
 - name: Fetch OMZ Powerlevel
   ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k.git
-    dest: $ZSH_CUSTOM/themes/powerlevel10k
+    dest: "{{ ansible_env.ZSH }}/custom/themes/powerlevel10k"
   ignore_errors: true
 
 - name: Fetch asdf
