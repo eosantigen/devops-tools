@@ -24,7 +24,6 @@
   ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k.git
     dest: $ZSH_CUSTOM/themes/powerlevel10k
-  ignore_errors: true
 
 - name: Fetch asdf
   ansible.builtin.git:
@@ -52,6 +51,4 @@
       [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
   loop:
     - "{{ ansible_env.HOME }}/.profile"
-    - "{{ ansible_env.HOME }}/.zprofile"
-  ignore_errors: true
 ...

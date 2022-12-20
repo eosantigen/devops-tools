@@ -1,10 +1,12 @@
-# source $ZSH/oh-my-zsh.sh
-- name: Source $HOME/.zprofile
+---
+- name: Config $ZSH/oh-my-zsh.sh
   ansible.builtin.lineinfile:
-    path: "{{item}}"
+    path: "{{ item }}"
+    create: yes
     insertbefore: 'source $ZSH/oh-my-zsh.sh'
     state: present
     line: |
-      source $HOME/.zprofile
+      source $HOME/.profile
   loop:
-    - "{{ansible_env.HOME}}/.zshrc"
+    - "{{ ansible_env.HOME }}/.zshrc"
+...

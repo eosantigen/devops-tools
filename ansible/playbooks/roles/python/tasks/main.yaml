@@ -8,6 +8,7 @@
 - name: Source pyenv executable
   ansible.builtin.lineinfile:
     path: "{{ item }}"
+    create: yes
     insertbefore: 'export SDKMAN_DIR'
     state: present
     line: |
@@ -16,6 +17,5 @@
       eval "$(pyenv init -)"
   loop:
     - "{{ ansible_env.HOME }}/.profile"
-    - "{{ ansible_env.HOME }}/.zprofile"
   ignore_errors: true
 ...
