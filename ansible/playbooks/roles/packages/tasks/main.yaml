@@ -24,8 +24,7 @@
   ansible.builtin.git:
     repo: https://github.com/romkatv/powerlevel10k.git
     dest: "{{ ansible_env.ZSH }}/custom/themes/powerlevel10k"
-  ignore_errors: true
-
+    
 - name: Fetch asdf
   ansible.builtin.git:
     repo: https://github.com/asdf-vm/asdf.git
