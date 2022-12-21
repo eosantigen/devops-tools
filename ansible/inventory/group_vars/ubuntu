@@ -7,7 +7,6 @@ snap_packages:
 - intellij-idea-community
 - termius-app
 - firefox
-- obsidian
 apt_packages:
 - curl
 - zsh
