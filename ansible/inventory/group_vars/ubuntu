@@ -35,4 +35,7 @@ docker_repository_url: https://download.docker.com/linux/ubuntu
 virtualbox_gpg_url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
 virtualbox_repository_url: https://download.virtualbox.org/virtualbox/debian
 virtualbox_packages: virtualbox-7.0
+vagrant_gpg_url: https://apt.releases.hashicorp.com/gpg
+vagrant_repository_url: https://apt.releases.hashicorp.com
+vagrant_packages: vagrant
 ...
