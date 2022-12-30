@@ -1,0 +1,15 @@
+docker_dependencies:
+- apt-transport-https
+- ca-certificates
+- curl
+- gnupg-agent
+- software-properties-common
+- python3-setuptools
+docker_packages:
+- docker-compose
+- docker-compose-plugin
+- docker-ce
+- docker-ce-cli
+- containerd.io
+docker_gpg_url: https://download.docker.com/linux/debian/gpg
+docker_repository_url: https://download.docker.com/linux/debian

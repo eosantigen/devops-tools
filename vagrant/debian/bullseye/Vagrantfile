@@ -1,0 +1,21 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bullseye64"
+  config.vm.define "debian-1"
+  config.vm.hostname = "debian-1"
+  config.vm.base_address = "192.168.56.2"
+  config.ssh.host = "debian-1"
+  config.vm.network "private_network", ip: "#{config.vm.base_address}"
+  config.ssh.insert_key = true
+  config.ssh.forward_agent = true
+  config.ssh.private_key_path = "/home/eosantigen/METIS/keys/ansible"
+  # config.vm.network "forwarded_port", guest: 22, host: 2222, protocol: "tcp" # need isolation from localhost to prevent accidents on it.
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "../../../ansible/playbooks/configurations.yaml"
+    ansible.inventory_path = "../../../ansible/inventory/hosts.ini" # that's probably perplexing things more.
+    ansible.extra_vars = {
+      nodes: "#{config.vm.hostname}",
+    }
+    # ansible.ask_become_pass = true
+  end
+end

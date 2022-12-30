@@ -1,0 +1,7 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - configurations/ssh
+  tags: [ config ]
+...
