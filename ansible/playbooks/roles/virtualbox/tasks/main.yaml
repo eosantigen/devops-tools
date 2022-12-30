@@ -1,0 +1,23 @@
+---
+- name: Add VirtualBox official GPG key
+  apt_key:
+    url: "{{ virtualbox_gpg_url }}"
+    state: present
+  when: ansible_os_family == "Debian"
+  become: true
+
+- name: Add VirtualBox repository
+  apt_repository:
+    update_cache: yes
+    repo: deb {{ virtualbox_repository_url }} {{ ansible_distribution_release }} contrib
+  when: ansible_os_family == "Debian"
+  become: true
+
+- name: Install VirtualBox with apt
+  apt:
+    update_cache: yes
+    name: "{{ virtualbox_packages }}"
+    state: latest
+  when: ansible_os_family == "Debian"
+  become: true
+...

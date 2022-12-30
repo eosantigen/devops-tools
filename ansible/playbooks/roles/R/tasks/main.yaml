@@ -19,7 +19,7 @@
 
 - name: Remove current rlib
   shell: R < {{autodeploy_dir}}/remove.R --no-save
-  become: True
+  become: true
 
 - name: Execute script that fetches latest rlib_version
   shell: "{{autodeploy_dir}}/fetch_latest_version.py"
@@ -49,7 +49,7 @@
 
 - name: Install rlib
   shell: R < {{autodeploy_dir}}/install.R --no-save
-  become: True
+  become: true
 
   # CLEANUP
 - name: Remove files
@@ -59,7 +59,7 @@
   systemd:
     state: restarted
     name: rserverd
-  become: True
+  become: true
 
 - name: Notify Slack
   slack:

@@ -12,7 +12,7 @@
 
 - name: Add Docker official GPG key
   apt_key:
-    url: "{{ gpg_url }}"
+    url: "{{ docker_gpg_url }}"
     state: present
   when: ansible_os_family == "Debian"
   become: true
@@ -22,7 +22,7 @@
 - name: Add Docker repository
   apt_repository:
     update_cache: yes
-    repo: deb {{ repository_url }} {{ ansible_distribution_release }} stable
+    repo: deb {{ docker_repository_url }} {{ ansible_distribution_release }} stable
   when: ansible_os_family == "Debian"
   become: true
 

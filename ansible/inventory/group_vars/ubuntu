@@ -30,6 +30,9 @@ docker_packages:
 - docker-ce
 - docker-ce-cli
 - containerd.io
-gpg_url: https://download.docker.com/linux/ubuntu/gpg
-repository_url: https://download.docker.com/linux/ubuntu
+docker_gpg_url: https://download.docker.com/linux/ubuntu/gpg
+docker_repository_url: https://download.docker.com/linux/ubuntu
+virtualbox_gpg_url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+virtualbox_repository_url: https://download.virtualbox.org/virtualbox/debian
+virtualbox_packages: virtualbox-7.0
 ...

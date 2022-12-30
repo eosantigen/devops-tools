@@ -32,7 +32,7 @@
   with_items: "{{timestamp_list_stripped | json_query('results[*].item') | max}}"
   register: timestamp_list_stripped_max
   when: timestamp_list_stripped is not skipped
-  ignore_errors: True
+  ignore_errors: true
   
 - name: Fetch events (without previous timestamp)
   influxdb_query:
@@ -118,7 +118,7 @@
     color: danger
   with_items: "{{ query2 | json_query('results[*].query_results[*].[time, object_name, reason, message]') }}"
   when: query2 is skipped == false and item !=''
-  ignore_errors: True
+  ignore_errors: true
 
 - name: Notify Slack - for Spark/Cassandra failure - query1
   slack:
@@ -129,7 +129,7 @@
     link_names: 1
   loop: "{{ query1 | json_query('query_results[*].[time, object_name, reason, message]') }}"
   when: item is match(".*spark.*")
-  ignore_errors: True
+  ignore_errors: true
 
 - name: Notify Slack - for Spark/Cassandra failure - query2
   slack:
@@ -140,4 +140,4 @@
     link_names: 1
   with_items: "{{ query2 | json_query('results[*].query_results[*].[time, object_name, reason, message]') }}"
   when: item is match(".*spark.*")
-  ignore_errors: True
+  ignore_errors: true

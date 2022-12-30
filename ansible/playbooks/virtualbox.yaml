@@ -1,0 +1,7 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - virtualbox
+  tags: [ virtualbox, vm ]
+...
