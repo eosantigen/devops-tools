@@ -25,11 +25,11 @@
     mode: 0600
 
 # Provided you are in a Gnome graphical environment only!
-- name: Reload Gnome Keying service to grab the keys
-  systemd:
-   name: gnome-keyring.service
-   scope: user
-   state: restarted
+# - name: Reload Gnome Keying service to grab the keys
+#   systemd:
+#    name: gnome-keyring.service
+#    scope: user
+#    state: restarted
 
 # The following is in case we are not in a Gnome environment which starts the agent by default.
 

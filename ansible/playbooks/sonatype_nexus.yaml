@@ -1,0 +1,7 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - sonatype_nexus
+  tags: [ sonatype_nexus ]
+...
