@@ -13,8 +13,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Jenkins.md",
-                "mode": "source",
+                "file": "Linux - Bash.md",
+                "mode": "preview",
                 "source": false
               }
             }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Jenkins.md",
+                "file": "Linux - Bash.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Jenkins.md",
+                "file": "Linux - Bash.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Jenkins.md"
+                "file": "Linux - Bash.md"
               }
             }
           }
@@ -138,6 +138,7 @@
   },
   "active": "e338d794a3b4ca14",
   "lastOpenFiles": [
+    "Jenkins.md",
     "Docker.md"
   ]
 }

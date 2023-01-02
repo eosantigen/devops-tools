@@ -8,21 +8,29 @@
 #### find text across subdirectories
 `grep -r "string" /path`
 
+#### replace string across subdirectories
+```sh
+# as dry-run at first...to check how many entries will be changed.
+grep -rli changeme . | grep -Ev "exluded_output" | xargs sed -i s/changeme/test/g | wc -l
+
+# without the dry-run, to actually do the replacement. 
+grep -rl changeme . | grep -Ev "exluded_output" | xargs sed -i s/changeme/test/g
+```
 #### visudo / sudoers
 ```sh
 Members of the admin group may gain root privileges
 
-`%admin ALL=(ALL) ALL`
+%admin ALL=(ALL) ALL
 
 Allow members of group sudo to execute any command
 
-`%sudo ALL=(ALL:ALL) /usr/bin/pip3, /usr/bin/git, !/bin/su`
+%sudo ALL=(ALL:ALL) /usr/bin/pip3, /usr/bin/git, !/bin/su
 
 See sudoers(5) for more information on "#include" directives:
 
-`#includedir /etc/sudoers.d`
+#includedir /etc/sudoers.d
 
-`%jupyterhub ALL= NOEXEC: /usr/bin/sudo, /usr/bin/pip3`
+%jupyterhub ALL= NOEXEC: /usr/bin/sudo, /usr/bin/pip3
 ```
 
 #### Use another server to send email:

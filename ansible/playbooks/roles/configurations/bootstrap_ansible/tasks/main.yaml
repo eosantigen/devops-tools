@@ -1,0 +1,34 @@
+---
+# Create user "ansible" (as the superuser you execute this playbook with.)
+- name: Create user "ansible"
+  user:
+    name: ansible
+    groups: sudo
+    append: yes
+    create_home: yes
+    shell: /bin/bash
+    system: no
+    state: present
+  become: true # in most cases you won't need a -K to the ansible-playbook options because the user you will use with your ssh-agent attached key, will correspond to a superuser with sudo NOPASSWD.
+
+# Used only for Control Nodes. It ensures that if you type "jenkins" in the host parameter, it will execute on it, only if jenkins is under the [cnodes:children] group.
+# If you type for example, "localhost" in the host parameter, it will skip it because it will fail the 'when' condition.
+- name: Copy private key only to control nodes (i.e. "cnodes" in the inventory)
+  copy:
+    src: "{{ private_key_ansible_path }}"
+    dest: "/home/ansible/.ssh/"
+    owner: ansible
+    group: ansible
+    mode: u+rw,g-rwx,o-rwx # -> 600
+  when: inventory_hostname in groups['cnodes']
+  become: true
+
+# Used for all nodes.
+- name: Copy public key under ~/.ssh/authorized_keys
+  ansible.posix.authorized_key:
+    user: ansible
+    key: "{{ lookup('file', '{{ public_key_ansible_path }}') }}"
+    exclusive: true # Whether to remove all other non-specified keys from the authorized_keys file. (exclusive minimizes the attack surface.)
+    state: present
+  become: true
+...

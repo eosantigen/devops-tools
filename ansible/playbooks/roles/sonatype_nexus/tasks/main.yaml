@@ -1,2 +1,14 @@
 ---
+# Setup JRE8. https://help.sonatype.com/repomanager3/product-information/system-requirements
+- name: Setup JRE8.
+  apt:
+    update_cache: yes
+    name: "openjdk-8-jre"
+    state: latest
+  when: ansible_os_family == "Debian"
+  become: true
+# Setup RAM settings according to hardware spec. https://help.sonatype.com/repomanager3/product-information/system-requirements
+# Setup the nexus user.
+# Setup the systemd service file. https://help.sonatype.com/repomanager3/installation-and-upgrades/run-as-a-service
+
 ...
