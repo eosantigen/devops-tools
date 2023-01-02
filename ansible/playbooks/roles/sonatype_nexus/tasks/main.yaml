@@ -1,14 +1,79 @@
 ---
-# Setup JRE8. https://help.sonatype.com/repomanager3/product-information/system-requirements
-- name: Setup JRE8.
-  apt:
-    update_cache: yes
-    name: "openjdk-8-jre"
-    state: latest
-  when: ansible_os_family == "Debian"
+# Create user "nexus" (as the superuser you execute this playbook with.)
+- name: Create user to run Nexus with.
+  user:
+    name: "{{ nexus_user }}"
+    # groups: sudo
+    # append: yes
+    create_home: yes
+    shell: /bin/bash
+    system: yes
+    state: present
+  register: nexus_user_rv
   become: true
+
+# Setup JRE8. https://help.sonatype.com/repomanager3/product-information/system-requirements
+
+- name: Include role "sdkman" as a prerequisite to install JDK 8.
+  ansible.builtin.import_role:
+    name: sdkman
+  vars:
+    user: "{{ nexus_user_rv }}"
+  # become: true
+  # become_user: "{{ nexus_user }}"
+  # become_flags: "--login"
+
+- name: Setup JDK 8 with SDKMan.
+  ansible.builtin.shell: source {{ nexus_user_rv.home }}/.profile && sdk update && sdk install java {{ jdk_version }}
+  args:
+    executable: /bin/bash
+  become: true
+  become_user: "{{ nexus_user }}"
+  become_flags: "--login"
+
 # Setup RAM settings according to hardware spec. https://help.sonatype.com/repomanager3/product-information/system-requirements
-# Setup the nexus user.
+
+# Fetch Sonatype Nexus Repository Manager package
+- name: Fetch Sonatype Nexus package.
+  ansible.builtin.unarchive:
+    src: "{{ nexus_fetch_url }}"
+    dest: "{{ nexus_user_rv.home }}"
+    remote_src: yes
+    creates: nexus-{{ nexus_version }}
+  become: true
+  become_user: "{{ nexus_user }}"
+
+- name: Configure Sonatype Nexus package.
+  ansible.builtin.lineinfile:
+    path: "{{ nexus_user_rv.home }}/nexus-{{ nexus_version }}/bin/nexus.rc"
+    line: run_as_user="{{ nexus_user_rv }}"
+  become: true
+  become_user: "{{ nexus_user }}"
+
 # Setup the systemd service file. https://help.sonatype.com/repomanager3/installation-and-upgrades/run-as-a-service
 
+- name: Symlink Sonatype Nexus executables to /etc/init.d.
+  ansible.builtin.file:
+    src: "{{ nexus_user_rv.home }}/nexus-{{ nexus_version }}/bin/nexus"
+    dest: /etc/init.d/nexus
+    owner: nexus
+    group: nexus
+    state: link
+  become: true
+
+- name: Configure Sonatype Nexus service for systemd.
+  ansible.builtin.copy:
+    src: nexus.service # local file within this folder's files dir.
+    dest: /etc/systemd/system/
+    owner: nexus
+    group: nexus
+  become: true
+
+- name: Activate and start the Sonatype Nexus service.
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    enabled: yes
+    state: started
+    name: nexus
+  become: true
 ...

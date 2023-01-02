@@ -1,5 +1,5 @@
 [Unit]
-Description=nexus service
+Description=Nexus Repository Manager service
 After=network.target
   
 [Service]
