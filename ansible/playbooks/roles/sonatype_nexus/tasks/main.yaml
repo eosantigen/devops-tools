@@ -29,7 +29,6 @@
     executable: /bin/bash
   become: true
   become_user: "{{ nexus_user }}"
-  become_flags: "--login"
 
 # Setup RAM settings according to hardware spec. https://help.sonatype.com/repomanager3/product-information/system-requirements
 
@@ -46,7 +45,7 @@
 - name: Configure Sonatype Nexus package.
   ansible.builtin.lineinfile:
     path: "{{ nexus_user_rv.home }}/nexus-{{ nexus_version }}/bin/nexus.rc"
-    line: run_as_user="{{ nexus_user_rv }}"
+    line: run_as_user="{{ nexus_user }}"
   become: true
   become_user: "{{ nexus_user }}"
 

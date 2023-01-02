@@ -1,4 +1,17 @@
 ---
+# Install dependencies and utilities for Ansible
+- name: Install dependencies and utilities for Ansible
+  apt:
+    update_cache: yes
+    name:
+    - acl
+    - unzip
+    - zip
+    - curl
+    state: latest
+  when: ansible_os_family == "Debian"
+  become: true
+
 # Create user "ansible" (as the superuser you execute this playbook with.)
 - name: Create user "ansible"
   user:

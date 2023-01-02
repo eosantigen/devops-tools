@@ -1,14 +1,4 @@
-- name: Install SDKMan dependencies.
-  apt:
-    update_cache: yes
-    name:
-    - unzip
-    - zip
-    - curl
-    state: latest
-  when: ansible_os_family == "Debian"
-  become: true
-
+---
 - name: Fetch SDKMan installation file.
   ansible.builtin.get_url:
     url: https://get.sdkman.io
@@ -26,17 +16,13 @@
   become_user: "{{ user.name }}"
 
 - name: Configure SDKMan.
-  ansible.builtin.shell: source "$HOME/.sdkman/bin/sdkman-init.sh"
+  ansible.builtin.shell: |
+    export SDKMAN_DIR="$HOME/.sdkman";
+    export SDKMAN_AUTO_ANSWER=true;
+    export SDKMAN_SELFUPDATE_ENABLE=false;
+    source "$HOME/.sdkman/bin/sdkman-init.sh"
+  args:
+    executable: /bin/bash
   become: true
   become_user: "{{ user.name }}"
-
-# - name: Configure SDKMan.
-#   ansible.builtin.lineinfile:
-#     path: "{{ user.home }}/.profile"
-#     insertafter: "EOF"
-#     line: |
-#       export SDKMAN_DIR="$HOME/.sdkman"
-#       export SDKMAN_AUTO_ANSWER=true
-#       export SDKMAN_SELFUPDATE_ENABLE=false
-#       [[ -s "{{ sdkman_dir }}/bin/sdkman-init.sh" ]] && source "{{ sdkman_dir }}/bin/sdkman-init.sh"
-#   become: true
+...

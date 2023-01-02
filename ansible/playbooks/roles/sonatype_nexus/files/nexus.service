@@ -8,6 +8,7 @@ LimitNOFILE=65536
 ExecStart=/etc/init.d/nexus start
 ExecStop=/etc/init.d/nexus stop 
 User=nexus
+Environment="INSTALL4J_JAVA_HOME=/home/nexus/.sdkman/candidates/java/current"
 Restart=on-abort
 TimeoutSec=600
   

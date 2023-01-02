@@ -33,6 +33,5 @@ Vagrant.configure("2") do |config|
       username: "vagrant",
       sdkman_user: "nexus",
     }
-    ansible.verbose = true
   end
 end
