@@ -23,9 +23,8 @@ Vagrant.configure("2") do |config|
       private_key_ansible_path: "/home/eosantigen/METIS/keys/ansible",
       public_key_ansible_path: "/home/eosantigen/METIS/keys/ansible.pub"
     }
-    # ansible.ask_vault_pass = true
-    # ansible.ask_become_pass = true # for some reason it wasn't requested here.
   end
+  
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "../../../ansible/playbooks/sonatype_nexus.yaml"
     ansible.inventory_path = "../../../ansible/inventory/hosts.ini"

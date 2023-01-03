@@ -9,14 +9,14 @@
     state: present
   register: nexus_user_rv
   become: true
-
+  
 # Setup JRE8. https://help.sonatype.com/repomanager3/product-information/system-requirements
 
 - name: Import role "sdkman" to install a JDK version.
   ansible.builtin.import_role:
     name: sdkman
   vars:
-    sdkman_user: "{{ nexus_user }}"
+    user: "{{ nexus_user_rv }}"
 
 - name: Install a JDK version with SDKMan.
   ansible.builtin.shell: source {{ nexus_user_rv.home }}/.profile && sdk update && sdk install java {{ jdk_version }}
@@ -24,6 +24,8 @@
     executable: /bin/bash
   become: true
   become_user: "{{ nexus_user }}"
+  become_flags: "--login"
+  when: jdk_version is defined
 
 # Setup RAM settings according to hardware spec. https://help.sonatype.com/repomanager3/product-information/system-requirements
 
