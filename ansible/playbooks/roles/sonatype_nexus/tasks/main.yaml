@@ -49,7 +49,14 @@
 
 # Configure the runtime environment. https://help.sonatype.com/repomanager3/installation-and-upgrades/configuring-the-runtime-environment
 
-
+- name: Pass the custom nexus.vmoptions file.
+  ansible.builtin.copy:
+    src: nexus.vmoptions
+    dest: "{{ nexus_user_rv.home }}/nexus-{{ nexus_version }}/bin/nexus.vmoptions"
+    owner: "{{ nexus_user }}"
+    group: "{{ nexus_user }}"
+  become: true
+  become_user: "{{ nexus_user }}"
 
 # Setup the systemd service file. https://help.sonatype.com/repomanager3/installation-and-upgrades/run-as-a-service
 
