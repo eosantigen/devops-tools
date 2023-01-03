@@ -3,8 +3,8 @@
   ansible.builtin.get_url:
     url: https://get.sdkman.io
     dest: /tmp/sdkman
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
+    owner: "{{ sdkman_user }}"
+    group: "{{ sdkman_user }}"
     mode: 0777
   become: true
 
@@ -13,7 +13,7 @@
   args:
     executable: /bin/bash
   become: true
-  become_user: "{{ user.name }}"
+  become_user: "{{ sdkman_user }}"
 
 - name: Configure SDKMan.
   ansible.builtin.shell: |
@@ -24,5 +24,5 @@
   args:
     executable: /bin/bash
   become: true
-  become_user: "{{ user.name }}"
+  become_user: "{{ sdkman_user }}"
 ...

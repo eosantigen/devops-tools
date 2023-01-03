@@ -3,8 +3,6 @@
 - name: Create user to run Nexus with.
   user:
     name: "{{ nexus_user }}"
-    # groups: sudo
-    # append: yes
     create_home: yes
     shell: /bin/bash
     system: yes
@@ -14,16 +12,13 @@
 
 # Setup JRE8. https://help.sonatype.com/repomanager3/product-information/system-requirements
 
-- name: Include role "sdkman" as a prerequisite to install JDK 8.
+- name: Import role "sdkman" to install a JDK version.
   ansible.builtin.import_role:
     name: sdkman
   vars:
-    user: "{{ nexus_user_rv }}"
-  # become: true
-  # become_user: "{{ nexus_user }}"
-  # become_flags: "--login"
+    sdkman_user: "{{ nexus_user }}"
 
-- name: Setup JDK 8 with SDKMan.
+- name: Install a JDK version with SDKMan.
   ansible.builtin.shell: source {{ nexus_user_rv.home }}/.profile && sdk update && sdk install java {{ jdk_version }}
   args:
     executable: /bin/bash
