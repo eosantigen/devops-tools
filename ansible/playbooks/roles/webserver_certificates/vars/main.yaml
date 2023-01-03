@@ -1,0 +1,7 @@
+---
+certificate_source_path: /home/eosantigen/Projects/GitHub/devanet/devanet.crt
+certificate_key_source_path: /home/eosantigen/Projects/GitHub/devanet/devanet.key
+
+certificate_dest_path: /etc/ssl/certs
+certificate_key_dest_path: /etc/ssl/private
+...

@@ -5,7 +5,7 @@
   - "{{ nodes }}"
   
   roles:
-  - configurations/bootstrap_ansible
+  - bootstrap_ansible
 
   vars_prompt:
   - name: private_key_ansible_path

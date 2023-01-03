@@ -1,0 +1,34 @@
+---
+- name: Import role "webserver_certificates" to deploy the TLS certificate.
+  ansible.builtin.import_role:
+    name: webserver_certificates
+
+- name: Install Nginx.
+  apt:
+    update_cache: yes
+    name: nginx
+    state: latest
+  when: ansible_os_family == "Debian"
+  become: true
+
+
+# - name: Deploy Nginx with Docker.
+#   community.docker.docker_container:
+#     name: nginx
+#     image: nginx
+#     pull: yes
+#     detach: yes
+#     state: started
+#     restart_policy: always
+#     published_ports:
+#     - 443:443
+#     log_driver: json-file
+#     log_options:
+#       max-size: "5m"
+#       max-file: "3"
+#     volumes:
+#       - /etc/ssl/certs:/etc/nginx/ssl/certs
+#       - /etc/ssl/private:/etc/nginx/ssl/private
+#       - "{{ user.home }}/nginx:/etc/nginx/conf.d/"
+#   become: true
+...

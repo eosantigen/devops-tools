@@ -16,17 +16,6 @@
   become_user: "{{ user.name }}"
 
 - name: Configure SDKMan.
-  ansible.builtin.shell: |
-    export SDKMAN_DIR="$HOME/.sdkman";
-    export SDKMAN_AUTO_ANSWER=true;
-    export SDKMAN_SELFUPDATE_ENABLE=false;
-    source "$HOME/.sdkman/bin/sdkman-init.sh"
-  args:
-    executable: /bin/bash
-  become: true
-  become_user: "{{ user.name }}"
-
-- name: Configure SDKMan.
   ansible.builtin.lineinfile:
     path: "{{ user.home }}/.profile"
     insertafter: "EOF"

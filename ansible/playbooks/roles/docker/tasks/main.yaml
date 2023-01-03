@@ -66,5 +66,5 @@
   docker_network:
     name: devanet
   become: true
-  # add check for when role is devanet .
+  when: inventory_hostname in groups['devanet']
 ...

@@ -1,15 +1,17 @@
 ---
 # Create user "nexus" (as the superuser you execute this playbook with.)
+
 - name: Create user to run Nexus with.
   user:
     name: "{{ nexus_user }}"
     create_home: yes
     shell: /bin/bash
     system: yes
+    home: /opt/nexus
     state: present
   register: nexus_user_rv
   become: true
-  
+
 # Setup JRE8. https://help.sonatype.com/repomanager3/product-information/system-requirements
 
 - name: Import role "sdkman" to install a JDK version.
@@ -29,7 +31,6 @@
 
 # Setup RAM settings according to hardware spec. https://help.sonatype.com/repomanager3/product-information/system-requirements
 
-# Fetch Sonatype Nexus Repository Manager package
 - name: Fetch Sonatype Nexus package.
   ansible.builtin.unarchive:
     src: "{{ nexus_fetch_url }}"
@@ -46,14 +47,18 @@
   become: true
   become_user: "{{ nexus_user }}"
 
+# Configure the runtime environment. https://help.sonatype.com/repomanager3/installation-and-upgrades/configuring-the-runtime-environment
+
+
+
 # Setup the systemd service file. https://help.sonatype.com/repomanager3/installation-and-upgrades/run-as-a-service
 
 - name: Symlink Sonatype Nexus executables to /etc/init.d.
   ansible.builtin.file:
     src: "{{ nexus_user_rv.home }}/nexus-{{ nexus_version }}/bin/nexus"
     dest: /etc/init.d/nexus
-    owner: nexus
-    group: nexus
+    owner: "{{ nexus_user }}"
+    group: "{{ nexus_user }}"
     state: link
   become: true
 
@@ -61,8 +66,8 @@
   ansible.builtin.copy:
     src: nexus.service # local file within this folder's files dir.
     dest: /etc/systemd/system/
-    owner: nexus
-    group: nexus
+    owner: "{{ nexus_user }}"
+    group: "{{ nexus_user }}"
   become: true
 
 - name: Activate and start the Sonatype Nexus service.
@@ -71,5 +76,38 @@
     enabled: yes
     state: started
     name: nexus
+  become: true
+
+# Setup the webserver as reverse proxy for Nexus.
+
+- name: Copy Nginx conf to Nexus user home.
+  ansible.builtin.copy:
+    src: nexus.conf # local file within this folder's files dir.
+    dest: "{{ nexus_user_rv.home }}/nginx/"
+    owner: "{{ nexus_user }}"
+    group: "{{ nexus_user }}"
+  become: true
+  become_user: "{{ nexus_user }}"
+
+- name: Import role "webserver_nginx" to setup Nexus behind a reverse proxy.
+  ansible.builtin.import_role:
+    name: webserver_nginx
+  vars:
+    user: "{{ nexus_user_rv }}"
+
+- name: Link Nginx conf from Nexus user home to Nginx server conf.
+  ansible.builtin.file:
+    src: "{{ nexus_user_rv.home }}/nginx/nexus.conf"
+    dest: /etc/nginx/conf.d/nexus.conf
+    owner: "{{ nexus_user }}"
+    group: "{{ nexus_user }}"
+    state: link
+  become: true
+
+- name: Reload Nginx.
+  ansible.builtin.systemd:
+    enabled: yes
+    state: reloaded
+    name: nginx
   become: true
 ...

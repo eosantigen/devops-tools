@@ -1,0 +1,7 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - webserver_nginx
+  tags: [ webserver, nginx ]
+...

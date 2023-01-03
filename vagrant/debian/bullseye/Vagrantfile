@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "debian-1"
   config.vm.hostname = "debian-1"
   config.vm.network "private_network", type: "dhcp"
-  config.vm.network "forwarded_port", guest: 8081, host: 8081
+  config.vm.network "forwarded_port", guest: 443, host: 443
   config.ssh.host = "DevaPC" # use the base host's hostname.
   config.ssh.insert_key = true # do not use the global public image key.
   config.ssh.forward_agent = true # have already the agent keys preconfigured for ease - this setting is for the bootstrap process, not for a client connection later on.
@@ -24,14 +24,13 @@ Vagrant.configure("2") do |config|
       public_key_ansible_path: "/home/eosantigen/METIS/keys/ansible.pub"
     }
   end
-  
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "../../../ansible/playbooks/sonatype_nexus.yaml"
     ansible.inventory_path = "../../../ansible/inventory/hosts.ini"
     ansible.extra_vars = {
       nodes: "#{config.vm.hostname}",
       username: "vagrant",
-      sdkman_user: "nexus",
     }
   end
 end

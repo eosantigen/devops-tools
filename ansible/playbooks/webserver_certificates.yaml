@@ -1,0 +1,17 @@
+---
+### This is meant to be executed by already having to your ssh-agent the destination host's superuser key, and using this user in the hosts file.
+- 
+  hosts:
+  - "{{ nodes }}"
+  
+  roles:
+  - webserver_certificates
+
+  vars_prompt:
+  - name: certificate_source_path
+    prompt: Enter your system's full path to the certificate.
+    private: false
+  - name: certificate_key_source_path
+    prompt: Enter your system's full path to the certificate key.
+    private: false
+...
