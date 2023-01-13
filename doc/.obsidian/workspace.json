@@ -138,7 +138,14 @@
   },
   "active": "e338d794a3b4ca14",
   "lastOpenFiles": [
+    "Prometheus & Grafana.md",
+    "Python Snippets.md",
     "Jenkins.md",
-    "Docker.md"
+    "Kubectl.md",
+    "InfluxDB.md",
+    "ElasticSearch.md",
+    "Docker.md",
+    "Apache JMeter.md",
+    "Linux - Bash.md"
   ]
 }
