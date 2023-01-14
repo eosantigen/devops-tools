@@ -8,15 +8,15 @@ A logbook web app with ActiveDirectory (LDAP) auth and Slack notifications for l
 - [django-auth-ldap](https://django-auth-ldap.readthedocs.io)
 - [BootstrapVue](https://bootstrap-vue.org)
 
-## Pre-requisites
+# Pre-requisites
 
-### For Debian
+## For Debian
 
 Base Python should already have been installed in the system by default, especially in Debian-based.
 
 `sudo apt install libldap-common libldap-dev libsasl2-dev python3-dev libssl-dev libsqlite3-dev libncurses-dev liblzma-dev libbz2-dev`
 
-### Python virtual environment setup - using pyenv
+## Python virtual environment setup - using pyenv
 
 Install `pyenv` with the Ansible playbook `python`.
 
@@ -39,6 +39,6 @@ Currently built on `3.10.4` .
 2. `./manage.py makemigrations logbook`
 3. `./manage.py migrate`
 
-## Run the app
+# Run the app
 
 `./manage.py runserver`
