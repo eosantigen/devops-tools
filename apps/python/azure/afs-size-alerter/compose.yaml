@@ -1,0 +1,17 @@
+services:
+  afs_size_alerter:
+    image: devops/afs-size-alerter
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER: eosantigen
+        WORKDIR: /eosantigen/app
+        APP_NAME: afs_size_alerter
+    container_name: afs-size-alerter
+    hostname: afs-size-alerter
+    environment:
+      APP_NAME: afs_size_alerter
+      AFS_CONN_STR:
+      AFS_SHARE_NAME:
+      AFS_DIR_PATH:

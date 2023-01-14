@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 
 """
 AUTHOR : eosantigen
@@ -12,9 +12,9 @@ from  slack_sdk.webhook import WebhookClient
 
 
 # Full connnection string of a SAS
-CONN_STR = ""
-SHARE_NAME = ""
-DIRECTORY_PATH = ""
+CONN_STR = os.environ['AFS_CONN_STR']
+SHARE_NAME = os.environ['AFS_SHARE_NAME']
+DIRECTORY_PATH = os.environ['AFS_DIR_PATH']
 
 # can add more later in a list dynamically, but iterating through the entire share is not optimal, probably.
 directory = ShareDirectoryClient.from_connection_string(conn_str=CONN_STR, share_name=SHARE_NAME, directory_path=DIRECTORY_PATH)
