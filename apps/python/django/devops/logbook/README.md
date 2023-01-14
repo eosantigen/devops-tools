@@ -31,6 +31,8 @@ Currently built on `3.10.4` .
 5. `python -m virtualenv <the_app_codebase_name>`  (or better yet, a simple .venv under $PWD)
 6. Activate the virtualenv you just created: `source <the_name_of_the_virtualenv>/bin/activate`
 
+(to deactivate it, just hit `deactivate`.)
+
 # Bootstrap the application (first time)
 
 1. `pip install -r requirements.txt`

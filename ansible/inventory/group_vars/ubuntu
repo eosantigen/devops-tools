@@ -17,6 +17,12 @@ apt_packages:
 - ffmpeg
 - moc
 - fonts-powerline
+- fonts-jetbrains-mono
+- libssl-dev
+- libsqlite3-dev
+- libncurses-dev
+- liblzma-dev
+- libbz2-dev
 docker_dependencies:
 - apt-transport-https
 - ca-certificates
