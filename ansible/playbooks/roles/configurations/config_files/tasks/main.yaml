@@ -6,7 +6,7 @@
     insertbefore: 'source $ZSH/oh-my-zsh.sh'
     state: present
     line: |
-      source $HOME/.profile
+      source $HOME/.zprofile
   loop:
     - "{{ ansible_env.HOME }}/.zshrc"
 ...
