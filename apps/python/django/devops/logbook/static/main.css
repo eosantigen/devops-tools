@@ -1,0 +1,44 @@
+#logo {
+    margin-left: 10pt;
+}
+
+body {
+    background-color: rgb(1, 17, 27);
+}
+
+#intro {
+    /* display: block;
+    justify-content: center;
+    align-items: center; */
+    margin: 50pt;
+    color: cyan;
+    text-align: center;
+}
+
+pre {
+    color: azure;
+    text-align: center;
+    margin: 60pt;
+}
+
+footer {
+    color: azure;
+    text-align: center;
+    font-size: 12pt;
+}
+
+.main-page footer img {
+    visibility: hidden;
+}
+
+.login-page footer {
+    color: azure;
+    text-align: center;
+    font-size: 12pt;
+    margin: 50pt;
+}
+
+#form {
+    color: azure;
+    margin-top: 100pt;
+}

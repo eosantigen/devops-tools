@@ -1,0 +1,141 @@
+{% include "base_include.html" %}
+
+{{context|json_script:"data"}}
+{{tags|json_script:"tags"}}
+
+<div id="navbar" style="overflow: hidden;">
+  <b-container>
+  <b-navbar type="dark" toggleable="lg" variant="dark" style="border-radius: 0 0 30px 30px; border: 2px solid;" fixed="top"> <!-- fixed="top" expands it fully. -->
+    <b-navbar-brand>
+      <img src="../static/logo_full.png" id="logo"></img>
+    </b-navbar-brand>
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        {% include "guidelines.html" %}
+        <b-nav-item href="#" title="Work In Progress..." disabled>Stats</b-nav-item>
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-item href="logout" title="Click to logout">Hi, {{user}}</b-nav-item>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
+</b-container>
+</div>
+
+<div id="form">
+  <b-container>
+    <b-form method="post">
+      <b-row>
+        <b-col>
+            {% csrf_token %}
+            <b-input-group>
+              <b-form-input type="text" name="user" maxlength="100" required id="id_user" v-model="user" placeholder="User..." :state="taskState"></b-form-input>
+              <b-form-input type="text" name="task" maxlength="100" required id="id_task" v-model="task" placeholder="Task.." :state="taskState"></b-form-input>
+              <b-button type="submit" variant="info">Save</b-button>
+              <b-button type="reset" variant="dark">Clear</b-button>
+        </b-col>
+      </b-row>
+      <b-row>
+       <b-col>
+        {% for tag in tags %}
+          <label for="{{tag.id_for_label}}"><p></p>
+            <b-form-checkbox-group name="tags">
+              <b-form-checkbox name="tags" id="{{id_for_label}}" value="{{tag.tag}}">{{tag.tag}}</b-form-checkbox>
+            </b-form-checkbox-group>
+          </label>
+        {% endfor %}
+        </b-col>
+      </b-row>
+    </b-input-group>
+  </b-form>
+ </b-container>
+</div>
+
+<p></p>
+
+<div id="app">
+  <b-container>
+    <b-row>
+      <b-col>
+          <b-input-group>
+            <b-form-input
+              id="filter-input"
+              v-model="filter"
+              type="search"
+              placeholder="Search: User / Time / Task / Tag"
+            ></b-form-input>
+
+            <b-input-group-append>
+              <b-button :disabled="!filter" @click="filter = ''" variant="dark">Clear</b-button>
+            </b-input-group-append>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
+    </b-row>
+    <!-- Main table element -->
+    <b-table
+      :items="items"
+      :fields="fields"
+      :current-page="currentPage"
+      :filter="filter"
+      :filter-included-fields="filterOn"
+      show-empty="false"
+      responsive="true"
+      hover="true"
+      dark="true"
+      striped="true"
+      small="true"
+      fixed="true"
+      sticky-header="70vh"
+      head-variant="dark"
+      table-variant="dark"
+      @filtered="onFiltered"
+      :sort-compare-options="{ numeric: true, sensitivity: 'base' }"
+    ></b-table>
+  </b-container>
+</div>
+
+<div class="main-page">{% include "footer.html" %}</div>
+
+
+  <script>
+    new Vue({
+      el: '#navbar'
+    }),
+    new Vue({
+      el: '#form',
+      computed: {
+        taskState() {
+          return this.task.length > 33 ? true : null
+        }
+      },
+      data() {
+        return {
+          task: '',
+          user: '',
+        }
+      }
+    }),
+    new Vue({
+
+        el: '#app',
+        data() {
+            return {
+                items: JSON.parse(document.getElementById('data').textContent),
+                fields: [{key: 'user', sortable: true}, {key: 'time', sortable: true}, 'task', 'tags'],
+                totalRows: 1,
+                currentPage: 1,
+                filter: null,
+                filterOn: ['user', 'time', 'task', 'tags']
+            }
+        },
+        methods: {
+        onFiltered(filteredItems) {
+            this.totalRows = filteredItems
+            this.currentPage = true
+        }
+    }
+  })
+  </script>

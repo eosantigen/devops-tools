@@ -1,0 +1,54 @@
+{% include "base_include.html" %}
+
+<!--
+    In the following:
+    The html tag correspoding to the forms.py/class LoginForm(Form) is the name and not the id.
+-->
+
+<div id="intro">
+    <H1>DevOps Logbook</H1>
+    <p>
+        <pre>Logging technical tasks for the DevOps Team.</pre>
+    </p>
+</div>
+
+
+<div id="login_form">
+  <b-container class="mx w-25 mb-3">
+    <b-form method="post" class="mb-3">
+      
+      {% csrf_token %}
+
+      <b-input-group class="mb-3" append="@devanet">
+          <b-form-input type="username" name="username" maxlength="32" placeholder="Username" required="true"></b-form-input>
+      </b-input-group>
+
+      <b-form-input class="mb-3" type="password" name="password" maxlength="100" placeholder="Password" required="true" >
+      </b-form-input>
+
+      <b-button block type="submit" variant="info">
+          Login as DevOps Team Member
+      </b-button>
+
+      <b-button block type="reset" variant="dark">
+          Clear
+      </b-button>
+    </b-form>
+  </b-container>
+  <pre>{{user}}</pre>
+</div>
+
+<div class="login-page">{% include "footer.html" %}</div>
+
+
+<script>
+
+    new Vue({
+        el: '#login_form',
+    })
+
+    new Vue({
+        el: '#intro'
+    })
+    
+</script>
