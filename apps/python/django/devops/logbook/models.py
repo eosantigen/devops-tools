@@ -12,10 +12,12 @@ class Task(models.Model):
         ordering = ('-time',)
 
 class TagManager(models.Manager):
+    
+    use_in_migrations = True
+
     def populate_tags(self, values):
         for i in values:
             self.create(tag=i)
-        # do something with the book
         # return i
 
 class Tag(models.Model):
@@ -30,19 +32,3 @@ class Tag(models.Model):
     class Meta:
         verbose_name = "tag"
         verbose_name_plural = "tags"
-
-
-# book = Book.objects.create_book("Pride and Prejudice")    
-
-TAG_VALUES = {
-'aks',
-'prod',
-'dev',
-'cicd',
-'hardware',
-}
-
-Tag.objects.populate_tags(TAG_VALUES)
-
-# for tag in TAG_VALUES:
-#     t = Tag.objects.populate_tags(tag)
