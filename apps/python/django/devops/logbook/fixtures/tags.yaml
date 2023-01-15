@@ -1,0 +1,15 @@
+- model: logbook.tag
+  fields:
+    tag: aks
+- model: logbook.tag
+  fields:
+    tag: dev
+- model: logbook.tag
+  fields:
+    tag: prod
+- model: logbook.tag
+  fields:
+    tag: cicd
+- model: logbook.tag
+  fields:
+    tag: hardware
