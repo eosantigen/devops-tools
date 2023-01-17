@@ -4,6 +4,7 @@
     repo: "{{ pyenv_repository }}"
     dest: "{{ ansible_env.HOME }}/.pyenv"
     update: yes
+  ignore_errors: false
     
 - name: Source pyenv executable
   ansible.builtin.lineinfile:
