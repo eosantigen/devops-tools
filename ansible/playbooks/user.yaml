@@ -1,0 +1,13 @@
+---
+- 
+  hosts:
+  - "{{ nodes }}"
+  
+  roles:
+  - user
+
+  vars_prompt:
+  - name: username
+    prompt: Create a superuser
+    private: false
+...

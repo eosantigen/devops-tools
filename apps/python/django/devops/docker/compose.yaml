@@ -6,6 +6,6 @@ services:
       dockerfile: docker/Dockerfile
     container_name: devops-logbook
     hostname: devops-logbook
-    ports:
+    expose:
       - 8000
     network_mode: host

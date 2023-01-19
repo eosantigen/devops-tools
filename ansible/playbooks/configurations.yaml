@@ -2,8 +2,9 @@
 -
   hosts: "{{ nodes }}"
   roles:
-    - configurations/ssh
-    - configurations/git
-    - configurations/config_files
+    - configurations/mounts
+    # - configurations/ssh
+    # - configurations/git
+    # - configurations/config_files
   tags: [ config ]
 ...
