@@ -1,5 +1,17 @@
 ---
+# install prerequisites for building Python from source with pyenv: 
+# build-essential
+# libsasl2-dev
+# libssl-dev
+# libsqlite3-dev
+# libncurses-dev
+# liblzma-dev
+# libbz2-dev
+# libffi-dev
+# libreadline-dev
 # pyenv install <some_Python_version>
 # pyenv global <the_Python_version_installed>
 # verify globally installed Python version
+# pip install virtualenv
+# show status of all the above
 # (give pass to developer) virtual-env is at the developer's choice
