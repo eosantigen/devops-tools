@@ -1,0 +1,26 @@
+---
+- name: Install mount.<fstype> packages
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - nfs-common
+    - libnfs-utils
+  when: ansible_os_family == "Debian"
+  become: true
+
+- name: Ensure all mountpoints are mounted (NFS)
+  ansible.posix.mount:
+    path: "{{ item.nfs_dest_path }}"
+    src: "{{ item.nfs_src_path }}"
+    fstype: nfs
+    opts: nofail,nolock,noatime,intr,tcp,actimeo=1800
+    state: mounted
+    boot: yes
+    backup: no
+  loop:
+    - { nfs_src_path: '', nfs_dest_path: '' } # add a mountpoint..
+  ignore_errors: false
+  become: true
+...

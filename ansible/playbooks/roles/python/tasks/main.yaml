@@ -1,23 +1,2 @@
----
-- name: Fetch pyevn
-  ansible.builtin.git:
-    repo: "{{ pyenv_repository }}"
-    dest: "{{ ansible_env.HOME }}/.pyenv"
-    update: yes
-  ignore_errors: false
-    
-- name: Source pyenv executable
-  ansible.builtin.lineinfile:
-    path: "{{ item }}"
-    create: yes
-    insertbefore: 'export SDKMAN_DIR'
-    state: present
-    line: |
-      export PYENV_ROOT="$HOME/.pyenv"
-      export PATH="$PYENV_ROOT/bin:$PATH"
-      eval "$(pyenv init -)"
-  loop:
-    - "{{ ansible_env.HOME }}/.profile"
-    - "{{ ansible_env.HOME }}/.zprofile"
-  ignore_errors: false
-...
+- include_tasks: pyenv.yaml
+- include_tasks: pyenv_python_version.yaml

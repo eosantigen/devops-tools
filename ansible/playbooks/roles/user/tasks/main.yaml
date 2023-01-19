@@ -1,0 +1,11 @@
+# Create a user as prompted.
+- name: Create user as prompted
+  ansible.builtin.user:
+    name: "{{ username }}"
+    groups: sudo
+    append: yes
+    create_home: yes
+    system: no
+    shell: /bin/bash
+    state: present
+  become: true
