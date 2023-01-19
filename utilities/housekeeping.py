@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-from os import system, walk
+from os import system, walk, path
 from argparse import ArgumentParser
-from datetime import date
+from datetime import date, datetime
 
 # Declarations
 # NOTE: The strings in backup_types must match the mountpoints
-backup_types = {'devkube', 'vm', 'dc'}
-backup_path = "/Users/eosantigen/Downloads"
+backup_types = {'etcd', 'vm', 'db'}
+backup_path = "/home/eosantigen/TESTS/DUMMY_DATA" # /mnt/backup/dev/{etcd, vm, db}
 
 def arguments():
   # Initialize argument parser
@@ -22,6 +22,7 @@ def arguments():
   return args
 
 # Traverse the path for list the backup items
+
 def list_backup_items(backup_type: str):
 
   backup_items = []
@@ -38,18 +39,25 @@ def clean(backup_type: str, keep: int):
   delete_command = "rm"
 
   # Populate a list of filenames from the Generator list_backup_items()
-  # Cut the list from the index of the keep parameter also keeping the file that includes the current_date.
-  # Reverse is True because we want to keep the most recent ones on top.
+  # Cut the list from the index of the keep parameter and also keep the file that includes the current_date string.
+  # The actual system's file POSIX timestamp (epoch) fetched with os.path.getmtime is the actual ordering key.
+  # Reverse is False for descending order. (relative to the getmtime.)
+
   for backup_items in list_backup_items(backup_type):
-    filenames = sorted([ b for b in backup_items ], reverse=True)
-    for f in filenames[keep:]:
+    filenames = sorted([ b for b in backup_items ], reverse=False, key=path.getmtime)
+    # filez = sorted(filenames, key=path.getmtime)
+    for f in filenames[:-keep]:
       if current_date not in f:
         items_to_delete.append(f)
 
-  # Execute 
+  items_to_keep = [x for x in filenames if x not in items_to_delete]
+  for item_to_keep in items_to_keep:
+    print("To keep: ", item_to_keep, "Modified at: ", datetime.fromtimestamp(path.getmtime(item_to_keep)))
+
+  # Execute deletion
   for item_to_delete in items_to_delete:
-    print("To be deleted: ", item_to_delete)
-    system(delete_command + " " + f'{item_to_delete}')
+    print("To be deleted: ", item_to_delete, "Modified at: ", datetime.fromtimestamp(path.getmtime(item_to_delete)))
+    # system(delete_command + " " + f'{item_to_delete}')
 
 if __name__ == '__main__':
 

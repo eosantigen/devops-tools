@@ -10,7 +10,7 @@
   when: ansible_os_family == "Debian"
   become: true
 
-- name: Ensure all mountpoints are mounted (NFS)
+- name: Ensure all mountpoints are mounted (NFS) - tethys
   ansible.posix.mount:
     path: "{{ item.nfs_dest_path }}"
     src: "{{ item.nfs_src_path }}"
@@ -20,7 +20,7 @@
     boot: yes
     backup: no
   loop:
-    - { nfs_src_path: '', nfs_dest_path: '' } # add a mountpoint..
+    - { nfs_src_path: '', nfs_dest_path: '' }
   ignore_errors: false
   become: true
 ...
