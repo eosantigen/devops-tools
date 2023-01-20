@@ -8,7 +8,7 @@ from datetime import date, datetime
 
 # Declarations
 
-backup_path = "/home/eosantigen/backup"
+backup_path = "/mnt/backup/devkube" # caution: under ../ of this there are other backups for production.
 
 def arguments():
   # Initialize argument parser
@@ -29,7 +29,8 @@ def days_between(file_date, current_date):
 
 def clean(keep: int, age: int):
   
-  current_date = date.today().strftime("%Y_%m_%d")
+  current_date_1 = date.today().strftime("%Y_%m_%d")
+  current_date_2 = date.today().strftime("%d_%m_%Y")
 
   items = []
 
@@ -38,13 +39,13 @@ def clean(keep: int, age: int):
   for (root, dirs, files) in tree:
     for file in files[keep:]:
       # exclude files which include the current_date (relative to the script execution date), and also exclude the items not yet of age.
-      if current_date not in file and days_between(date.fromtimestamp(path.getmtime(f'{root}/{file}')), date.today()) >= age:
+      if current_date_1 not in file and current_date_2 not in file and days_between(date.fromtimestamp(path.getmtime(f'{root}/{file}')), date.today()) >= age:
         items.append(f'{root}/{file}')
-    
 
   # Add an ascending order from the older ones to most recent top-down.
   items.sort(reverse=False, key=path.getmtime)
 
+  print("Oldest to most recent\n---------------------")
   for item in items:
     print("Deleting: ", item, "-> Created/Modified at: ", datetime.fromtimestamp(path.getmtime(item)))
     remove(item)
