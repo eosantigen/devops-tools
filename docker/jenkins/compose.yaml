@@ -1,0 +1,23 @@
+services:
+  jenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    hostname: jenkins
+    ports:
+      - 80:80
+      - 8080:8080
+    networks:
+    - jenkins
+    volumes:
+      - $HOME/Projects/compose_data/jenkins:/var/jenkins_home:rw
+  dind:
+    image: docker:dind
+    container_name: dind
+    privileged: true
+    expose:
+      - 2376
+    networks:
+    - jenkins
+networks:
+  jenkins:
+    name: jenkins

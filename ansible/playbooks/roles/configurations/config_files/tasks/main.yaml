@@ -9,4 +9,22 @@
       source $HOME/.zprofile
   loop:
     - "{{ ansible_env.HOME }}/.zshrc"
+
+- name: Config $HOME/.zprofile
+  ansible.builtin.lineinfile:
+    path: "{{ item }}"
+    create: yes
+    state: present
+    line: |
+      # set PATH so it includes user's private bin if it exists
+      if [ -d "$HOME/bin" ] ; then
+      PATH="$HOME/bin:$PATH"
+      fi
+
+      # set PATH so it includes user's private bin if it exists
+      if [ -d "$HOME/.local/bin" ] ; then
+      PATH="$HOME/.local/bin:$PATH"
+      fi
+  loop:
+    - "{{ ansible_env.HOME }}/.zprofile"
 ...
