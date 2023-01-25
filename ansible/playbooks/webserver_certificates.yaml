@@ -7,6 +7,8 @@
   roles:
   - webserver_certificates
 
+  tags: [ openssl, webserver ]
+
   vars_prompt:
   - name: certificate_source_path
     prompt: Enter your system's full path to the certificate.

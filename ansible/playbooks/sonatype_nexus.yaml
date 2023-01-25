@@ -6,7 +6,7 @@
   tags: [ sonatype_nexus ]
   vars:
     nexus_fetch_url: https://download.sonatype.com/nexus/3/nexus-{{ nexus_version }}-unix.tar.gz
-    nexus_version: 3.45.0-01
+    nexus_version: 3.44.0-01
     nexus_user: nexus
     jdk_version: 8.0.302-open
 ...

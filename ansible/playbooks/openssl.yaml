@@ -1,0 +1,7 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - openssl
+  tags: [ openssl, webserver ]
+...

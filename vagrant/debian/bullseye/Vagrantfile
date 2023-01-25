@@ -1,11 +1,11 @@
 Vagrant.configure("2") do |config|
 
   config.vm.box = "debian/bullseye64"
-  config.vm.define "debian-1"
-  config.vm.hostname = "debian-1"
+  config.vm.define "nexus-local"
+  config.vm.hostname = "nexus-local"
   config.vm.network "private_network", type: "dhcp"
   config.vm.network "forwarded_port", guest: 443, host: 443
-  config.ssh.host = "DevaPC" # use the base host's hostname.
+  config.ssh.host = "localhost" # use the base host's hostname.
   config.ssh.insert_key = true # do not use the global public image key.
   config.ssh.forward_agent = true # have already the agent keys preconfigured for ease - this setting is for the bootstrap process, not for a client connection later on.
 

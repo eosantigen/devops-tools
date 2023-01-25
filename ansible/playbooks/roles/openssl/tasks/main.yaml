@@ -1,0 +1,19 @@
+---
+
+- name: Generate an OpenSSL private key with the default values (4096 bits, RSA)
+  community.crypto.openssl_privatekey:
+    path: "{{ certificate_key_path }}"
+
+- name: Generate an OpenSSL Certificate Signing Request
+  community.crypto.openssl_csr:
+    path: "{{ certificate_csr_path }}"
+    privatekey_path: "{{ certificate_key_path }}"
+    common_name: "{{ certificate_common_name }}"
+
+- name: Generate a Self Signed OpenSSL certificate
+  community.crypto.x509_certificate:
+    path: "{{ certificate_path }}"
+    privatekey_path: "{{ certificate_key_path }}"
+    csr_path: "{{ certificate_csr_path }}"
+    provider: "{{ certificate_provider }}"
+...
