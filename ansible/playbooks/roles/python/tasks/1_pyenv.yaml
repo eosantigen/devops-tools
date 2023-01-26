@@ -1,10 +1,9 @@
 ---
-- name: Fetch pyevn
+- name: Fetch pyenv
   ansible.builtin.git:
     repo: "{{ pyenv_repository }}"
     dest: "{{ ansible_env.HOME }}/.pyenv"
     update: yes
-  ignore_errors: false
     
 - name: Source pyenv executable
   ansible.builtin.lineinfile:
@@ -19,5 +18,22 @@
   loop:
     - "{{ ansible_env.HOME }}/.profile"
     - "{{ ansible_env.HOME }}/.zprofile"
-  ignore_errors: false
+
+- name: Install prerequisites for building Python from source with pyenv
+  apt:
+    update_cache: yes
+    name:
+      - build-essential
+      - libsasl2-dev
+      - libssl-dev
+      - libsqlite3-dev
+      - libncurses-dev
+      - liblzma-dev
+      - libbz2-dev
+      - libffi-dev
+      - libreadline-dev
+      - zlib1g-dev
+    state: latest
+  when: ansible_os_family == "Debian"
+  become: true
 ...

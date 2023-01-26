@@ -1,2 +1,2 @@
-- include_tasks: pyenv.yaml
-- include_tasks: pyenv_python_version.yaml
+- include_tasks: 1_pyenv.yaml
+- include_tasks: 2_pyenv_python_version.yaml
