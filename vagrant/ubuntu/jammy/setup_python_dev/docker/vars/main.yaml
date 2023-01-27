@@ -1,6 +1,9 @@
 docker_dependencies:
 - apt-transport-https
 - ca-certificates
+- acl
+- unzip
+- zip
 - curl
 - gnupg-agent
 - software-properties-common

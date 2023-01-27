@@ -1,5 +1,5 @@
 ---
-certificate_common_name: devanet
+certificate_common_name: "*.devanet"
 certificate_path: /home/eosantigen/Projects/devanet/ssl/devanet.crt
 certificate_key_path: /home/eosantigen/Projects/devanet/ssl/devanet.key
 certificate_csr_path: /home/eosantigen/Projects/devanet/ssl/devanet.csr
