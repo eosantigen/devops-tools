@@ -33,6 +33,10 @@
       - libffi-dev
       - libreadline-dev
       - zlib1g-dev
+      - acl
+      - unzip
+      - zip
+      - curl
     state: latest
   when: ansible_os_family == "Debian"
   become: true
