@@ -3,21 +3,20 @@ services:
     image: jenkins/jenkins
     container_name: jenkins
     hostname: jenkins
-    ports:
-      - 80:80
-      - 8080:8080
-    networks:
-    - jenkins
+    # ports:
+    #   - 80:80
+    #   - 8080:8080
     volumes:
       - $HOME/Projects/compose_data/jenkins:/var/jenkins_home:rw
-  dind:
-    image: docker:dind
-    container_name: dind
-    privileged: true
-    expose:
-      - 2376
-    networks:
-    - jenkins
-networks:
-  jenkins:
-    name: jenkins
+      - /var/run/docker.sock:/var/run/docker.sock:rw
+    extra_hosts:
+    - "nexus.devanet:192.168.56.4"
+    network_mode: host
+  # dind:
+  #   image: docker:dind
+  #   container_name: dind
+  #   privileged: true
+  #   expose:
+  #     - 2376
+  #   networks:
+  #   - jenkins
