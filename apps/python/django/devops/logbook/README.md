@@ -31,13 +31,21 @@ Currently built on `3.10.4` .
 5. `python -m virtualenv <the_app_codebase_name>`  (or better yet, a simple .venv under $PWD)
 6. Activate the virtualenv you just created: `source <the_name_of_the_virtualenv>/bin/activate`
 
+**OR**
+
+1. 1..5 as above
+2. pyenv shell <the_app_codebase_dir>.<the_project_name>.<the_app_name> , likewise, `pyenv shell devops-tools.devops.logbook` which is actually a virtual env inside the pyenv directory.
+
 (to deactivate it, just hit `deactivate`.)
 
-# Bootstrap the application (first time)
+# Bootstrap the application
 
-1. `pip install -r requirements.txt`
-2. `./manage.py makemigrations logbook`
-3. `./manage.py migrate`
+Once you are in the proper pyenv:
+
+1. Install requirements: `pip install -r requirements.txt`
+2. Setup the schema: `./manage.py makemigrations logbook`
+3. Create/update the schema: `./manage.py migrate`
+4. Populate with initial data (data migration) for the Tag model: `./manage.py loaddata tags` 
 
 # Run the app
 
