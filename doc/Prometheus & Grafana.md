@@ -98,3 +98,26 @@ oauth2:
 
 # CUSTOM - END
 ```
+
+# Alerts on new Grafana
+
+## Contact Points : Template
+```
+{{ define "MYTEMPLATE" }}
+{{ range .Alerts }}
+	{{ range .Annotations.SortedPairs }}
+		{{ .Value }}
+		{{end}}
+	{{end}}
+{{end}}
+```
+
+## Queries
+
+### Example: Alerting for a node CPU load over a variable number of CPU spec
+
+1. Add a query like : `sum(node_load15{}) by (node) / count(node_cpu_seconds_total{mode="system"}) by (node)`
+_given that we have unequal number of cores across nodes._
+2. If its reduseable, reduce it to dropping non-numeric values
+3. Add a third expression of type Math where you add the output of (2) into a comparison operator of your choice, e.g. `$B > 1` .
+4. Then the Summary textfield would contain: Node => `{{ $labels.node }}` - CPU Load => `{{ $values.B.Value }}`
