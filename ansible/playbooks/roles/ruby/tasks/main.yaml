@@ -2,7 +2,7 @@
 - name: Fetch rbenv
   ansible.builtin.git:
     repo: "{{ rbenv_repository }}"
-    dest: "{{ ansible_env.HOME }}/bin/rbenv"
+    dest: "{{ ansible_env.HOME }}/.rbenv"
     update: yes
     
 - name: Source rbenv executable
@@ -11,10 +11,12 @@
     insertbefore: 'export SDKMAN_DIR'
     state: present
     line: |
-      export PATH="$HOME/bin/rbenv/bin:$PATH"
+      export PATH="$HOME/.rbenv/bin:$PATH"
       eval "$(rbenv init -)"
   loop:
     - "{{ ansible_env.HOME }}/.profile"
+    - "{{ ansible_env.HOME }}/.zprofile"
+
     
 - name: Install ruby-build plugin
   ansible.builtin.git:

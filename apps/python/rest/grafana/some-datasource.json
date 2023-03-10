@@ -1,0 +1,13 @@
+{
+    "name":"",
+    "typeName": "",
+    "type": "",
+    "url": "",
+    "isDefault": true,
+    "access": "proxy",
+    "basicAuth": false,
+    "readOnly": false,
+    "jsonData": {
+        "oauthPassThru": true
+    }
+}
