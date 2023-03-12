@@ -2,6 +2,9 @@
 .vscode/
 doc/.obsidian/
 
+# MACOS
+.DS_Store
+
 # Local .terraform
 **/.terraform/*
 **/.terraform.lock.hcl
