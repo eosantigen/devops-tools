@@ -4,10 +4,11 @@
     repo: "{{ rbenv_repository }}"
     dest: "{{ ansible_env.HOME }}/.rbenv"
     update: yes
-    
+
 - name: Source rbenv executable
   ansible.builtin.lineinfile:
     path: "{{ item }}"
+    create: true
     insertbefore: 'export SDKMAN_DIR'
     state: present
     line: |
@@ -17,7 +18,6 @@
     - "{{ ansible_env.HOME }}/.profile"
     - "{{ ansible_env.HOME }}/.zprofile"
 
-    
 - name: Install ruby-build plugin
   ansible.builtin.git:
     repo: "{{ ruby_build_repository }}"
