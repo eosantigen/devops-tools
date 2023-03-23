@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
 # Execute with sudo.
+# sudo ./install_ansible.bash -v 7.0.0 -u $USER
+# and then, optionally, either open a new terminal tab or do:
+# su -l $USER
+# If the username is meant to be another username in your system, instead of $USER provide their username, ( _in lowercase and without the $_ )
+
 # Check required version at https://pypi.org/project/ansible/
 
 install_ansible_linux() {
@@ -23,7 +28,7 @@ install_ansible_linux() {
 
 
 if [[ $1 == "" ]]; then
-  echo "Requires an option: -v <Ansible version>"
+  echo "Requires 2 options: -v <Ansible version> -u <username>"
   exit 22
 else
   while getopts "v:u:" option; do

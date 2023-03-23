@@ -1,0 +1,11 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - mounts
+  tags: [ os, nfs ]
+  vars:
+    mounts:
+    - { nfs_src_path: '', nfs_dest_path: '' }
+    - { nfs_src_path: '', nfs_dest_path: '' }
+...
