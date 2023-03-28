@@ -1,6 +1,6 @@
 *.retry
 .vscode/
-doc/.obsidian/
+**/.obsidian
 
 # MACOS
 .DS_Store
