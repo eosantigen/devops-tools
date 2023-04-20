@@ -58,4 +58,5 @@
     create: yes
   loop:
     - "{{ ansible_env.HOME }}/.profile"
+    - "{{ ansible_env.HOME }}/.zprofile"
 ...

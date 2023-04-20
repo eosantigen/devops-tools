@@ -13,7 +13,7 @@ install_ansible_linux() {
     if [ $(which apk) ]; then
         apk update && apk add python3 py3-pynacl musl-dev gcc gcc-dev libffi-dev py3-cffi openssl-dev
     elif [ $(which apt) ]; then
-        apt update -y && apt install -y python3 libssl-dev python3-cffi libffi-dev
+        apt update -y && apt install -y python3 python3-pip libssl-dev python3-cffi libffi-dev
     elif [ $(which dnf) ]; then
         dnf check-update && dnf --best install python3
     else

@@ -3,16 +3,15 @@
 ############################
 snap_packages:
 - code
-- postman
-- intellij-idea-community
-- termius-app
-- firefox
+#- postman
+#- intellij-idea-community
+#- termius-app
 apt_packages:
 - curl
 - zsh
 - conky
 - vim
-- git
+- gh
 - tree
 - ffmpeg
 - moc
