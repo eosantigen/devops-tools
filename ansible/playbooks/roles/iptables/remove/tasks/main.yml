@@ -1,0 +1,41 @@
+---
+# tasks file for iptables/remove
+
+- name: Set the policy for the INPUT chain to ACCEPT
+  ansible.builtin.iptables:
+    chain: INPUT
+    policy: ACCEPT
+    state: present
+  become: true
+
+- name: De-reference custom chains on INPUT
+  ansible.builtin.iptables:
+    chain: INPUT
+    jump: ACCEPT-SSH-HTTPS
+    state: absent
+  become: true
+
+- name: Remove rule from custom chain
+  ansible.builtin.iptables:
+    chain: ACCEPT-SSH-HTTPS
+    chain_management: true
+    source: 0.0.0.0/0
+    destination_ports: 
+    - 22
+    - 443
+    protocol: tcp
+    jump: ACCEPT
+    ctstate: NEW,ESTABLISHED
+    state: absent
+    comment: "allow only incoming connections and prevent outbound SSH connection attempts."
+  become: true
+
+- name: Remove custom chain
+  ansible.builtin.iptables:
+    chain: ACCEPT-SSH-HTTPS
+    chain_management: true
+    state: absent
+  become: true
+
+
+  # /etc/ssh/sshd_config -> AllowUsers ubuntu ? -> systemctl reload sshd

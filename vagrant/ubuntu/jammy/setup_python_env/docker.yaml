@@ -1,7 +1,0 @@
----
--
-  hosts: "{{ nodes }}"
-  roles:
-    - docker
-  tags: [ docker ]
-...

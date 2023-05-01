@@ -1,3 +1,0 @@
-- import_playbook: mounts.yaml
-- import_playbook: python.yaml
-- import_playbook: docker.yaml

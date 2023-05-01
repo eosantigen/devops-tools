@@ -15,6 +15,9 @@ apt_packages:
 - tree
 - ffmpeg
 - moc
+- remmina
+- nmap
+- net-tools
 - fonts-powerline
 - fonts-jetbrains-mono
 - libssl-dev
