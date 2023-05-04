@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+iptables -N ACCEPT-KUBE-INTERNAL
+
+iptables -A ACCEPT-KUBE-INTERNAL -s 127.0.0.0/8 -p tcp -m multiport --dports 6443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+iptables -A ACCEPT-KUBE-INTERNAL -s 10.0.2.0/24 -p tcp -m multiport --dports 6443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+iptables -A ACCEPT-KUBE-INTERNAL -s 10.42.0.0/24 -p tcp -m multiport --dports 6443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+iptables -N DROP-KUBE-EXTERNAL
+
+iptables -A DROP-KUBE-EXTERNAL -p tcp -m multiport --dports 6443 -j DROP
+
+# It's SUPER IMPORTANT to put the ACCEPT FIRST, or from localhost you will be blocked as well.
+
+iptables -A INPUT -j ACCEPT-KUBE-INTERNAL
+iptables -A INPUT -j DROP-KUBE-EXTERNAL

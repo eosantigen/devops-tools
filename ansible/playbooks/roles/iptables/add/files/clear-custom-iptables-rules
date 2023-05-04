@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+sudo iptables -F DROP-KUBE-EXTERNAL
+sudo iptables -F ACCEPT-KUBE-INTERNAL

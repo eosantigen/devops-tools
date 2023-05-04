@@ -1,41 +1,91 @@
 ---
 # tasks file for iptables/remove
 
-- name: Set the policy for the INPUT chain to ACCEPT
-  ansible.builtin.iptables:
-    chain: INPUT
-    policy: ACCEPT
-    state: present
-  become: true
+# - name: Set the policy for the INPUT chain to ACCEPT
+#   ansible.builtin.iptables:
+#     chain: INPUT
+#     policy: ACCEPT
+#     state: present
+#   become: true
 
 - name: De-reference custom chains on INPUT
   ansible.builtin.iptables:
     chain: INPUT
-    jump: ACCEPT-SSH-HTTPS
+    jump: DROP-KUBE-EXTERNAL
     state: absent
   become: true
 
-- name: Remove rule from custom chain
+
+- name: De-reference custom chains on INPUT
   ansible.builtin.iptables:
-    chain: ACCEPT-SSH-HTTPS
-    chain_management: true
-    source: 0.0.0.0/0
-    destination_ports: 
-    - 22
-    - 443
-    protocol: tcp
-    jump: ACCEPT
-    ctstate: NEW,ESTABLISHED
-    state: absent
-    comment: "allow only incoming connections and prevent outbound SSH connection attempts."
-  become: true
-
-- name: Remove custom chain
-  ansible.builtin.iptables:
-    chain: ACCEPT-SSH-HTTPS
-    chain_management: true
+    chain: INPUT
+    jump: ACCEPT-KUBE-INTERNAL
     state: absent
   become: true
+  
+# - name: De-reference custom chains on INPUT
+#   ansible.builtin.iptables:
+#     chain: OUTPUT
+#     jump: DROP-KUBE-EXTERNAL
+#     state: absent
+#   become: true
+
+# - name: Remove rule from custom chain
+#   ansible.builtin.iptables:
+#     chain: DROP-KUBE-EXTERNAL
+#     chain_management: true
+#     source: "!192.168.1.11"
+#     destination_ports: 
+#     - 6443
+#     protocol: tcp
+#     jump: DROP
+#     ctstate: NEW,ESTABLISHED
+#     state: absent
+#   become: true
+
+# - name: Remove rule from custom chain
+#   ansible.builtin.iptables:
+#     chain: DROP-KUBE-EXTERNAL
+#     chain_management: true
+#     source: "!10.0.2.15"
+#     destination_ports: 
+#     - 6443
+#     protocol: tcp
+#     jump: DROP
+#     ctstate: NEW,ESTABLISHED
+#     state: absent
+#   become: true
+
+# - name: Remove rule from custom chain
+#   ansible.builtin.iptables:
+#     chain: DROP-KUBE-EXTERNAL
+#     chain_management: true
+#     source: "!127.0.0.1/8"
+#     destination_ports: 
+#     - 6443
+#     protocol: tcp
+#     jump: DROP
+#     ctstate: NEW,ESTABLISHED
+#     state: absent
+#   become: true
 
 
-  # /etc/ssh/sshd_config -> AllowUsers ubuntu ? -> systemctl reload sshd
+# - name: Remove rule from custom chain
+#   ansible.builtin.iptables:
+#     chain: DROP-KUBE-EXTERNAL
+#     chain_management: true
+#     source: "!10.0.2.15/24"
+#     destination_ports: 
+#     - 6443
+#     protocol: tcp
+#     jump: DROP
+#     ctstate: NEW,ESTABLISHED
+#     state: absent
+#   become: true
+
+# - name: Remove custom chain
+#   ansible.builtin.iptables:
+#     chain: DROP-KUBE-EXTERNAL
+#     chain_management: true
+#     state: absent
+#   become: true
