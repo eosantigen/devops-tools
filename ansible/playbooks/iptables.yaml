@@ -1,13 +1,5 @@
 ---
-# ADD / CREATE
 - hosts: "{{ nodes }}"
   roles:
-  - iptables/add
-  tags: [ never, add ]
-  
-# REMOVE / CLEANUP
-- hosts: "{{ nodes }}"
-  roles:
-  - iptables/remove
-  tags: [ never, remove ]
+  - iptables
 ...

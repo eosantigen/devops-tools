@@ -1,0 +1,39 @@
+---
+# tasks file for iptables
+
+- name: Copy script that adds custom rules
+  ansible.builtin.copy:
+    src: add-custom-iptables-rules
+    dest: "{{ add_custom_rules_script }}"
+    owner: root
+    group: root
+    mode: u+rwx,g+rwx,o+r
+  become: true
+
+- name: Copy script that removes custom rules
+  ansible.builtin.copy:
+    src: remove-custom-iptables-rules
+    dest: "{{ remove_custom_rules_script }}"
+    owner: root
+    group: root
+    mode: u+rwx,g+rwx,o+r
+  become: true
+
+- name: Enable applying the rules on machine boot
+  ansible.builtin.cron:
+    name: "Add custom iptables rules"
+    special_time: reboot
+    job: "{{ add_custom_rules_script }}"
+  become: true
+
+# NOTE: This tagged task is mainly for manual testing: This runs one-off the local file, against the remote host, without copying it over. This task will never be executed, unless you explicitly call the playbook targeted with the "--tags remove" parameter. This is here just for one-off manual management via the cli only, and when you are sure the script is correct, ensure to execute the playbook without the tag as well, to actually copy the script to the remote host. (hint: "never" is a special built-in Ansible tag to prevent auto-execution.)
+- name: oneoff - Remove custom iptables rules
+  ansible.builtin.script: remove-custom-iptables-rules
+  become: true
+  tags: [ never, remove ]
+
+# NOTE: This tagged task is mainly for manual testing: This runs one-off the local file, against the remote host, without copying it over. This task will never be executed, unless you explicitly call the playbook targeted with the "--tags add" parameter. This is here just for one-off manual management via the cli only, and when you are sure the script is correct, ensure to execute the playbook without the tag as well, to actually copy the script to the remote host. (hint: "never" is a special built-in Ansible tag to prevent auto-execution.)
+- name: oneoff - Add custom iptables rules
+  ansible.builtin.script: add-custom-iptables-rules
+  become: true
+  tags: [ never, add ]

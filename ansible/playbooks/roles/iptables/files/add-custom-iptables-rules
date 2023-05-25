@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# sleep 8m
+
+# Here, we need the public IP, and the first awk arg should fetch it.
+# Caution: on other server hosts we might need a private LAN IP which might be on a different positional arg.
+export SELF_IP="hostname -I | awk '{print $1}'"
+
+# Regarding K8s, the following must be met. (according to official docs):
+
+# TCP	Inbound	6443		Kubernetes API server	All
+# TCP	Inbound	2379-2380	etcd server client API	kube-apiserver, etcd
+# TCP	Inbound	10250		Kubelet API		            Self, Control plane
+# TCP	Inbound	10259		kube-scheduler		        Self
+# TCP	Inbound	10257		kube-controller-manager	  Self
+
+# Regarding K3s, the following extras must be met (according to official docs):
+
+# UDP	8472	All nodes	All nodes	Required only for Flannel VXLAN (it's enabled)
+
+# Typically, all outbound traffic is allowed.
+
+# Hosts contain on UDP:
+
+# udp , tcp  0      0 <publicIP>:53      0.0.0.0:* (dns/domain)
+# udp        0      0 <publicIP>:68      0.0.0.0:* (dhcpc)                
+# udp        0      0 0.0.0.0:8472       0.0.0.0:*	(flannel k8s networking, see above.)
+
+# the ports have been verified by netstat -ltnpnu, and tested with nmap & nc .
+
+# Check the Kubelet port is closed from the outside:
+# nc 192.168.1.10 10250 -v (this command should be waiting forever without returning output)
+# nmap -p 10250 192.168.1.10 --reason
+
+# Check the Kubelet port is open within the host only:
+# nc localhost 10250 -v
+# nc 192.168.1.10 10250 -v
+
+# Check you're not blocking any outbound to the Internet:
+# curl ip.me / crictl pull busybox:invalid-tag
+
+
+# It's important to note the order of those rules. They are evaluated in a found-first order. Use -A to append this chain at the end of the INPUT chain.
+
+iptables -N DEVANET
+
+iptables -A DEVANET -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# All to loopback - tcp/udp
+
+iptables -A DEVANET -s 0.0.0.0/0 -d 127.0.0.1/8 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+
+# From self - tcp/udp
+
+iptables -A DEVANET -s $SELF_IP -d 0.0.0.0/0 -p tcp -j ACCEPT
+
+iptables -A DEVANET -s $SELF_IP -d 0.0.0.0/0 -p udp -j ACCEPT
+
+# From public - tcp/udp
+
+iptables -A DEVANET -s 0.0.0.0/0 -d 0.0.0.0/0 -p tcp -m multiport ! --dports 22,53,80,443,6443 -m conntrack --ctstate NEW -j DROP
+
+iptables -A DEVANET -s 0.0.0.0/0 -d 0.0.0.0/0 -p udp -m multiport ! --dports 53 -m conntrack --ctstate NEW -j DROP
+
+iptables -A INPUT -j DEVANET

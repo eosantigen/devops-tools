@@ -1,0 +1,7 @@
+# Scripts for custom iptables rules
+
+custom_rules_script_location: /usr/local/bin
+
+add_custom_rules_script: "{{ custom_rules_script_location }}/add-custom-iptables-rules" # this name must match the file you have set under "files/".
+
+remove_custom_rules_script: "{{ custom_rules_script_location }}/remove-custom-iptables-rules" # this name must match the file you have set under "files/".

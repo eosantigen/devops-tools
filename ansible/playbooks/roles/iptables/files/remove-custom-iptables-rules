@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+# Flush the chain's content
+iptables -F DEVANET
+
+# Remove the chain from the main INPUT chain
+iptables -D INPUT -j DEVANET
+
+# Delete the custom chain, to start all over again
+iptables -X DEVANET
