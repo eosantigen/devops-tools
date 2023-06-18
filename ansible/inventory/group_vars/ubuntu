@@ -3,7 +3,8 @@
 ############################
 snap_packages:
 - code
-#- postman
+- insomnia
+- postman
 #- intellij-idea-community
 #- termius-app
 apt_packages:
@@ -25,6 +26,8 @@ apt_packages:
 - libncurses-dev
 - liblzma-dev
 - libbz2-dev
+- libyaml-dev # for ruby.
+- sshpass
 docker_dependencies:
 - apt-transport-https
 - ca-certificates

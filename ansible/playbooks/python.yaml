@@ -10,5 +10,5 @@
     - name: pyenv_python_version
       private: false
       prompt: Type a Python version to install with pyenv or press enter for the default
-      default: 3.7.14
+      default: 3.10.4
 ...

@@ -1,12 +1,12 @@
 ---
-ca_key_path: /home/eosantigen/Projects/devanet/ssl/ca-devapc.key
+ca_key_path: /home/eosantigen/Projects/Personal/devanet/ssl/ca-devapc.key
 ca_common_name: "DevaPC"
-ca_path: /home/eosantigen/Projects/devanet/ssl/ca-devapc.pem
-ca_csr_path: /home/eosantigen/Projects/devanet/ssl/ca-devapc.csr
+ca_path: /home/eosantigen/Projects/Personal/devanet/ssl/ca-devapc.pem
+ca_csr_path: /home/eosantigen/Projects/Personal/devanet/ssl/ca-devapc.csr
 
 certificate_common_name: "devanet"
-certificate_path: /home/eosantigen/Projects/devanet/ssl/devanet.pem
-certificate_key_path: /home/eosantigen/Projects/devanet/ssl/devanet.key
-certificate_csr_path: /home/eosantigen/Projects/devanet/ssl/devanet.csr
+certificate_path: /home/eosantigen/Projects/Personal/devanet/ssl/devanet.pem
+certificate_key_path: /home/eosantigen/Projects/Personal/devanet/ssl/devanet.key
+certificate_csr_path: /home/eosantigen/Projects/Personal/devanet/ssl/devanet.csr
 certificate_provider: selfsigned
 ...

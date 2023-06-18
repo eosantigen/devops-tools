@@ -3,8 +3,11 @@
   hosts: "{{ nodes }}"
   roles:
     # - configurations/mounts
-    # - configurations/ssh
+    - configurations/ssh
     - configurations/git
-    - configurations/config_files
+    # - configurations/config_files
+  vars_files:
+    - ../inventory/variables.yaml
+
   tags: [ config ]
 ...
