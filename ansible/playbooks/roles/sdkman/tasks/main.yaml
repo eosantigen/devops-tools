@@ -2,22 +2,23 @@
 - name: Fetch SDKMan installation file.
   ansible.builtin.get_url:
     url: https://get.sdkman.io
-    dest: /tmp/sdkman
-    owner: "{{ user.name }}"
-    group: "{{ user.name }}"
+    dest: "$HOME/sdkman"
+    owner: "{{ user }}"
+    group: "{{ user }}"
     mode: 0777
   become: true
+  become_user: "{{ user }}"
 
 - name: Install SDKMan.
-  ansible.builtin.shell: /tmp/sdkman
+  ansible.builtin.shell: "$HOME/sdkman"
   args:
     executable: /bin/bash
   become: true
-  become_user: "{{ user.name }}"
+  become_user: "{{ user }}"
 
 - name: Configure SDKMan.
   ansible.builtin.lineinfile:
-    path: "{{ user.home }}/.profile"
+    path: "{{ item }}"
     insertafter: "EOF"
     line: |
       export SDKMAN_DIR="$HOME/.sdkman"
@@ -25,4 +26,8 @@
       export SDKMAN_SELFUPDATE_ENABLE=false
       [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
   become: true
+  become_user: "{{ user }}"
+  loop:
+    - "$HOME/.zprofile"
+    - "$HOME/.profile"
 ...

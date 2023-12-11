@@ -4,7 +4,7 @@
 snap_packages:
 - code
 - insomnia
-- postman
+#- postman
 #- intellij-idea-community
 #- termius-app
 apt_packages:
@@ -17,6 +17,7 @@ apt_packages:
 - ffmpeg
 - moc
 - remmina
+- filezilla
 - nmap
 - net-tools
 - fonts-powerline

@@ -1,0 +1,12 @@
+---
+-
+  hosts: "{{ nodes }}"
+  roles:
+    - sdkman
+  tags: [ sdkman ]
+  vars_prompt:
+    - name: user
+      private: false
+      prompt: Add sdkman under which user?
+      default: eosantigen
+...

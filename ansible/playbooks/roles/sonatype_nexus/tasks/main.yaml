@@ -18,7 +18,9 @@
   ansible.builtin.import_role:
     name: sdkman
   vars:
-    user: "{{ nexus_user_rv }}"
+    user: "{{ nexus_user }}"
+  become: true
+  become_user: "{{ nexus_user }}"
 
 - name: Install a JDK version with SDKMan.
   ansible.builtin.shell: source {{ nexus_user_rv.home }}/.profile && sdk update && sdk install java {{ jdk_version }}

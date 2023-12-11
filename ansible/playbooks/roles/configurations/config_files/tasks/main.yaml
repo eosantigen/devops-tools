@@ -9,8 +9,10 @@
       source $HOME/.zprofile
   loop:
     - "{{ ansible_env.HOME }}/.zshrc"
+  tags:
+  - zsh
 
-- name: Config $HOME/.zprofile
+- name: Config $HOME/.(z)profile
   ansible.builtin.lineinfile:
     path: "{{ item }}"
     create: yes
@@ -25,6 +27,11 @@
       if [ -d "$HOME/.local/bin" ] ; then
       PATH="$HOME/.local/bin:$PATH"
       fi
+
+      alias gitl="git log --oneline --graph --abbrev-commit --decorate --date=relative --branches --pretty=format:'%C(bold yellow)%h %C(auto)%d%C(reset) %s %C(italic magenta)(%as) %C(blue)<%cn>' --all"
   loop:
     - "{{ ansible_env.HOME }}/.zprofile"
+    - "{{ ansible_env.HOME }}/.profile"
+  tags:
+  - zsh
 ...
