@@ -9,7 +9,7 @@
 `grep -r "string" /path`
 
 #### replace string across subdirectories
-```sh
+```bash
 # as dry-run at first...to check how many entries will be changed.
 grep -rli changeme . | grep -Ev "exluded_output" | xargs sed -i s/changeme/test/g | wc -l
 
@@ -17,16 +17,16 @@ grep -rli changeme . | grep -Ev "exluded_output" | xargs sed -i s/changeme/test/
 grep -rl changeme . | grep -Ev "exluded_output" | xargs sed -i s/changeme/test/g
 ```
 #### visudo / sudoers
-```sh
-Members of the admin group may gain root privileges
+```bash
+# Members of the admin group may gain root privileges
 
 %admin ALL=(ALL) ALL
 
-Allow members of group sudo to execute any command
+# Allow members of group sudo to execute any command
 
 %sudo ALL=(ALL:ALL) /usr/bin/pip3, /usr/bin/git, !/bin/su
 
-See sudoers(5) for more information on "#include" directives:
+# See sudoers(5) for more information on "#include" directives:
 
 #includedir /etc/sudoers.d
 
@@ -42,7 +42,7 @@ ssh -i $HOME/.ssh/${ssh_user} ${ssh_user}@${email_server} "echo -e 'Subject: ${e
 
 #### Use of $HOME/bin
 If your `~/.profile` contains:
-```
+```bash
 # set PATH so it includes user's private bin if it exists
 
 if [ -d "$HOME/bin" ] ; then
@@ -55,8 +55,8 @@ fi
 Then we can easily use this to place any binaries under our `$HOME/bin`.
 
 #### Grab dynamically the repo base name
-```sh
-PROJECT_NAME=`basename -s 'git@bitbucket.org:eosantigen/' -s '.git' $(git remote get-url origin --all)`
+```bash
+PROJECT_NAME=`basename -s 'git@github.com:eosantigen/' -s '.git' $(git remote get-url origin --all)`
 ```
 
 #### Default variable values
