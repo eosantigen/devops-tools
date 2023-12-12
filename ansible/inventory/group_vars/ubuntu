@@ -4,9 +4,11 @@
 snap_packages:
 - code
 - insomnia
+- keepassxc
+- obsidian
+- intellij-idea-community
+- termius-app
 #- postman
-#- intellij-idea-community
-#- termius-app
 apt_packages:
 - curl
 - zsh
