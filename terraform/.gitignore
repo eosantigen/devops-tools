@@ -1,7 +1,12 @@
 # Local .terraform
 **/.terraform/*
-**/.terraform.lock.hcl
+
+# Local TerraGrunt
+**/.terragrunt-cache
 
 # Ignore Mac .DS_Store files
 .DS_Store
 **/.DS_Store
+
+# EXCLUDE from .gitignore
+!**/.terraform.lock.hcl
