@@ -12,14 +12,14 @@ snap_packages:
 apt_packages:
 - curl
 - zsh
-- conky
+# - conky
 - vim
-- gh
+# - gh
 - tree
-- ffmpeg
-- moc
-- remmina
-- filezilla
+# - ffmpeg
+# - moc
+# - remmina
+# - filezilla
 - nmap
 - net-tools
 - fonts-powerline

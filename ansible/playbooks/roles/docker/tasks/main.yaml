@@ -66,5 +66,5 @@
   docker_network:
     name: devanet
   become: true
-  when: inventory_hostname in groups['devanet']
+  when: inventory_hostname in groups['devanet'] or inventory_hostname in groups['devamac_utm']
 ...

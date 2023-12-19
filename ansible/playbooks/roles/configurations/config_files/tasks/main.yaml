@@ -32,6 +32,4 @@
   loop:
     - "{{ ansible_env.HOME }}/.zprofile"
     - "{{ ansible_env.HOME }}/.profile"
-  tags:
-  - zsh
 ...
