@@ -15,9 +15,9 @@ install_on_linux() {
 
   wget -c --directory-prefix ${BIN_DIR} ${VERSION_URL__LINUX} --show-progress
   tar -xvf ${BIN_DIR}/node-v${VERSION}-linux-x64.tar.xz -C 	${BIN_DIR}
-  ln -s ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/node		${BIN_DIR}/node
-  ln -s ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/npm 		${BIN_DIR}/npm
-  ln -s ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/npx 		${BIN_DIR}/npx
+  ln -sf ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/node		${BIN_DIR}/node
+  ln -sf ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/npm 		${BIN_DIR}/npm
+  ln -sf ${BIN_DIR}/node-v${VERSION}-linux-x64/bin/npx 		${BIN_DIR}/npx
   rm ${BIN_DIR}/node-v${VERSION}-linux-x64.tar.xz
 
   echo "DONE. BYE."
@@ -33,9 +33,9 @@ install_on_macos() {
 
   wget -c --directory-prefix ${BIN_DIR} ${VERSION_URL__MACOS} --show-progress
   tar -xvf ${BIN_DIR}/node-v${VERSION}-darwin-arm64.tar.gz -C 	${BIN_DIR}
-  ln -s ${BIN_DIR}/node-v${VERSION}-darwin-arm64/bin/node 	${BIN_DIR}/node
-  ln -s ${BIN_DIR}/node-v${VERSION}-darwin-arm64/bin/npm 	${BIN_DIR}/npm
-  ln -s ${BIN_DIR}/node-v${VERSION}-darwin-arm64/bin/npx 	${BIN_DIR}/npx
+  ln -sf ${BIN_DIR}/node-v${VERSION}-darwin-arm64/bin/node 	${BIN_DIR}/node
+  ln -sf ${BIN_DIR}/node-v${VERSION}-darwin-arm64/bin/npm 	${BIN_DIR}/npm
+  ln -sf ${BIN_DIR}/node-v${VERSION}-darwin-arm64/bin/npx 	${BIN_DIR}/npx
   rm ${BIN_DIR}/node-v${VERSION}-darwin-arm64.tar.gz
 
   echo "DONE. BYE."
