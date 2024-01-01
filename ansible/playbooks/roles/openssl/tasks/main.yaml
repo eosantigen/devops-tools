@@ -36,8 +36,7 @@
     organization_name: DevaNet
     subject_alt_name:
       - "DNS:devaweb.devanet"
-      - "DNS:*.devanet"
-      - "DNS:*.local"
+      - "DNS:*.devaweb.devanet"
 
 - name: Generate a Self Signed OpenSSL certificate
   community.crypto.x509_certificate:
