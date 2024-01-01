@@ -6,12 +6,12 @@ services:
       dockerfile: Dockerfile
       args:
         USER: eosantigen
-        WORKDIR: /eosantigen/app
-        APP_NAME: afs_size_alerter
-    container_name: afs-size-alerter
-    hostname: afs-size-alerter
+        WORKDIR: $HOME/app
+        APP_NAME: afs_size_slack_alerter
+    container_name: afs_size_slack_alerter
+    hostname: afs_size_slack_alerter
     environment:
-      APP_NAME: afs_size_alerter
-      AFS_CONN_STR:
-      AFS_SHARE_NAME:
-      AFS_DIR_PATH:
+      APP_NAME: afs_size_slack_alerter
+      CONN_STR: ${CONN_STR}
+      AFS: # fileshare names separated by comma
+      SLACK_WEBHOOK_TOKEN: ${SLACK_WEBHOOK_TOKEN}
