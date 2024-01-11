@@ -1,0 +1,17 @@
+[user]
+	name = Eos Antigen
+	email =
+	signingkey = /home/eosantigen/.ssh/eos_id_rsa.pub
+[core]
+	editor = vim
+[color]
+	ui = auto
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true

@@ -35,10 +35,8 @@
     common_name: "{{ certificate_common_name }}"
     organization_name: DevaNet
     subject_alt_name:
-      - "DNS:nexus.local"
-      - "DNS:nexus.devanet"
-      - "DNS:argocd.devanet"
-      - "DNS:grpc.argocd.devanet"
+      - "DNS:devaweb.devanet"
+      - "DNS:*.devaweb.devanet"
 
 - name: Generate a Self Signed OpenSSL certificate
   community.crypto.x509_certificate:

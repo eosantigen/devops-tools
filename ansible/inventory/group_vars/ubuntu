@@ -14,7 +14,6 @@ apt_packages:
 - zsh
 # - conky
 - vim
-# - gh
 - tree
 # - ffmpeg
 # - moc
@@ -31,6 +30,7 @@ apt_packages:
 - libbz2-dev
 - libyaml-dev # for ruby.
 - sshpass
+- tmux
 docker_dependencies:
 - apt-transport-https
 - ca-certificates
