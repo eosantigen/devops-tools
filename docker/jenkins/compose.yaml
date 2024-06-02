@@ -7,16 +7,12 @@ services:
     #   - 80:80
     #   - 8080:8080
     volumes:
-      - $HOME/Projects/compose_data/jenkins:/var/jenkins_home:rw
-      - /var/run/docker.sock:/var/run/docker.sock:rw
-    extra_hosts:
-    - "nexus.devanet:192.168.56.4"
-    network_mode: host
-  # dind:
-  #   image: docker:dind
-  #   container_name: dind
-  #   privileged: true
-  #   expose:
-  #     - 2376
-  #   networks:
-  #   - jenkins
+      - $HOME/Projects/compose_data/jenkins:/var/lib/jenkins:rw
+      - /var/run/docker.sock:/var/run/docker.sock:rw # this allows jenkins to execute Docker from inside the container itself. If somewhere you get a docker.sock Permission Denied error... go the base host where you run the container, where the Docker daemon runs and simply hit sudo chmod 0666 /var/run/docker.sock
+      # For a permanent solution to this:
+      # Add the following to /etc/systemd/system/docker.service.d/override.conf
+      # [Service]
+      # ExecStartPost=/bin/sh -c 'chmod 666 /var/run/docker.sock'
+    # extra_hosts:
+    # - "my-dummy-host.local:192.168.X.X" # this adds entries to /etc/hosts
+    network_mode: host # this exposes the container to your pc so you can ping it from another pc.
